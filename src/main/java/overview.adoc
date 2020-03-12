@@ -1,0 +1,4 @@
+== Pipeline Engine
+
+More words will go here when we have things ironed out, 
+but in the meantime, explore from com.redhat.dxp.search.pipeline.PipelineFactory
