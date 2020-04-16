@@ -1,0 +1,62 @@
+{
+    "steps": [
+        {   
+            "dvar": {
+                "loop": 0,
+                "total": 10
+            }
+        },
+
+        {
+            "while": {
+                "condition": "loop < total",
+
+                "block": [
+                    {
+                        "if": { 
+                            "condition": "if (loop < total) return true; else return false;",
+                            "then": [
+                                {
+                                    "logMsg": {
+                                        "msg": "loop is less than total:  [${loop} < ${total}]"
+                                    }
+                                }
+                            ],
+                            "else": [
+                                {
+                                    "logMsg": {
+                                        "msg": "loop is greater or equal to than total:  [${loop} >= ${total}]"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+
+                    {
+                        "logMsg": {
+                            "msg": "Loop BEFORE increment:  [${loop}]"
+                        }
+                    },
+
+                    {   
+                        "dvar": {
+                           "loop": "loop + 1"
+                        }
+                    },
+
+                    {
+                        "logMsg": {
+                            "msg": "Loop AFTER increment:  [${loop}]"
+                        }
+                    }
+                ]
+            }
+        },
+
+        {
+            "return": {
+                "var": "loop"
+            }
+        }
+    ]
+} 

@@ -1,0 +1,17 @@
+{
+    "steps": [
+        {   
+            "loop": {
+                "var": "fooo",
+                "times": 5,
+                "block": [
+                    {
+                        "logMsg": {
+                            "msg": "In loop [${fooo}]"
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+} 
