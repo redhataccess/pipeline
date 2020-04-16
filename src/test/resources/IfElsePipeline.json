@@ -1,0 +1,44 @@
+{
+    "steps": [
+        {   
+            "dvar": {
+                "val1": "\"alpha\"",
+                "val2": 10,
+                "val3": "val2 * 100",
+                "val4": "\"Hello \" + val1"
+            }
+        },
+
+        {
+            "if": { 
+                    "condition": "val3 > 10000",
+                    "then": [
+                        {
+                            "logMsg": {
+                                "msg": "In the then portion [${val3}]"
+                            }
+                        }
+                    ],
+                    "else": [
+                        {
+                            "logMsg": {
+                                "msg": "In the else portion [${val3}]"
+                        }
+                    }
+                ]
+            }
+        },
+
+        {
+            "logContext": {
+                "msg":  "Our context contains:  "
+            }
+        },
+
+        {
+            "return": {
+                "var": "val2"
+            }
+        }
+    ]
+} 

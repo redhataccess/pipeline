@@ -1,73 +1,153 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.redhat.dxp.search</groupId>
-  <artifactId>pipeline</artifactId>
-  <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
-  <name>pipeline</name>
-  <url>http://maven.apache.org</url>
-  <properties>
-    <maven.compiler.target>11</maven.compiler.target>
-    <maven.compiler.source>11</maven.compiler.source>
-  </properties>
-  <dependencyManagement>
-  <dependencies>
-    <dependency>
-      <groupId>org.junit</groupId>
-      <artifactId>junit-bom</artifactId>
-      <version>5.6.0</version>
-      <type>pom</type>
-      <scope>import</scope>
-    </dependency>
-  </dependencies>
-</dependencyManagement>
-  <dependencies>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-  <build>
-    <plugins>
-        <plugin>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.1</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.22.2</version>
-        </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.1.1</version>
-        <executions>
-          <execution>
-            <id>attach-javadocs</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <additionalJOptions>
-            <additionalJOption>-J--add-exports=jdk.javadoc/jdk.javadoc.internal.tool=ALL-UNNAMED</additionalJOption>
-            <additionalJOption>-Xdoclint:all,-html,-accessibility</additionalJOption>
-            <additionalJOption>--base-dir</additionalJOption>
-            <additionalJOption>${project.basedir}</additionalJOption>
-          </additionalJOptions>
-          <doclet>org.asciidoctor.asciidoclet.Asciidoclet</doclet>
-          <docletArtifact>
-            <groupId>com.github.chrisvest</groupId>
-            <artifactId>asciidoclet</artifactId>
-            <version>2.0.0</version>
-          </docletArtifact>
-          <detectJavaApiLink>true</detectJavaApiLink>
-          <overview>src/main/java/overview.adoc</overview>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.redhat</groupId>
+    <artifactId>pipeline</artifactId>
+    <version>1.0</version>
+
+    <name>Pipeline Redesign</name>
+    <description>Pipeline Redesign</description>
+
+    <packaging>jar</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <org.apache.maven.plugins_maven-compiler-plugin>3.8.1</org.apache.maven.plugins_maven-compiler-plugin>
+
+        <java_version>1.8</java_version>
+
+        <org.jboss.logging_jboss-logging>3.4.1.Final</org.jboss.logging_jboss-logging>
+        <org.json_json>20190722</org.json_json>
+        <com.fasterxml.jackson.core_jackson-databind>2.10.3</com.fasterxml.jackson.core_jackson-databind>
+        <com.fasterxml.jackson.dataformat_jackson-dataformat-xml>2.10.3</com.fasterxml.jackson.dataformat_jackson-dataformat-xml>
+        <com.fasterxml.jackson.dataformat_jackson-dataformat-yaml>2.10.3</com.fasterxml.jackson.dataformat_jackson-dataformat-yaml>
+
+        <org.apache.commons_commons-lang3>3.10</org.apache.commons_commons-lang3>
+        <commons-io_commons-io>2.6</commons-io_commons-io>
+
+        <org.apache-extras.beanshell_bsh>2.0b6</org.apache-extras.beanshell_bsh>
+        <org.codehaus.groovy_groovy-jsr223>3.0.2</org.codehaus.groovy_groovy-jsr223>
+        <org.codehaus.groovy_mvel2>2.4.7.Final</org.codehaus.groovy_mvel2>
+        <org.python_jython>2.7.2</org.python_jython>
+        <org.jruby_jruby>9.2.11.1</org.jruby_jruby>
+
+        <org.slf4j_slf4j-log4j12>1.7.30</org.slf4j_slf4j-log4j12>
+        <junit_junit>4.13</junit_junit>
+        <org.mockito_mockito-all>1.10.19</org.mockito_mockito-all>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${org.apache.maven.plugins_maven-compiler-plugin}</version>
+
+                <configuration>
+                    <source>${java_version}</source>
+                    <target>${java_version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging</artifactId>
+            <version>${org.jboss.logging_jboss-logging}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>${org.json_json}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${com.fasterxml.jackson.core_jackson-databind}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+            <version>${com.fasterxml.jackson.dataformat_jackson-dataformat-xml}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
+            <version>${com.fasterxml.jackson.dataformat_jackson-dataformat-yaml}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${org.apache.commons_commons-lang3}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io_commons-io}</version>
+        </dependency>
+
+        <!-- Script Language Support -->
+        <dependency>
+            <groupId>org.apache-extras.beanshell</groupId>
+            <artifactId>bsh</artifactId>
+            <version>${org.apache-extras.beanshell_bsh}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-jsr223</artifactId>
+            <version>${org.codehaus.groovy_groovy-jsr223}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mvel</groupId>
+            <artifactId>mvel2</artifactId>
+            <version>${org.codehaus.groovy_mvel2}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.python</groupId>
+            <artifactId>jython</artifactId>
+            <version>${org.python_jython}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jruby</groupId>
+            <artifactId>jruby</artifactId>
+            <version>${org.jruby_jruby}</version>
+        </dependency>
+
+        <!-- Testing Support -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${org.slf4j_slf4j-log4j12}</version>
+            <scope>test</scope>
+        </dependency>
+
+		<dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit_junit}</version>
+            <scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+            <version>${org.mockito_mockito-all}</version>
+			<scope>test</scope>
+		</dependency>
+    </dependencies>
 </project>

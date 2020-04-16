@@ -1,0 +1,13 @@
+name:  My test
+description:  Tests a loop pipeline
+
+steps:
+    - name: logMsg
+      description:  Log a hello world message
+      args:
+          msg:  Hello ${name} world
+
+    - name: logMsg
+      description:  Log a cya message
+      args:
+          msg:  Catch you later ${name}
