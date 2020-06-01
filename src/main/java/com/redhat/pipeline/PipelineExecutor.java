@@ -1,7 +1,9 @@
 package com.redhat.pipeline;
 
+import com.redhat.common.processor.executor.Executor;
 import java.util.List;
 import java.util.Map;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -9,62 +11,66 @@ import org.json.JSONObject;
  *
  * @author sfloess
  */
-public interface PipelineExecutor {
+public interface PipelineExecutor extends Executor<PipelineContext, Pipeline> {
     /**
-     * Run a pipeline as denoted in the meta format <code>metaPipeline</code>.
+     * <code>processor</code> will be used to iterate across <code>metaSteps</code> to process <code>toProcess</code>.
      *
-     * @param <R>          the type of the result of a pipeline run.
+     * @param toProcess    the thing to process.
+     * @param metaPipeline contains the steps to run.
      *
-     * @param metaPipeline the meta version of a pipeline to execute.
-     * @param context      the object to use when running a pipeline.
-     *
-     * @return the result of a pipeline run.
-     *
-     * @throws java.lang.Exception if any problems arise running the pipeline entitled <code>name</code> to process <code>context</code>.
+     * @return the result of processing.
      */
-    <R> R runMetaPipeline(JSONObject metaPipeline, PipelineContext context) throws Exception;
+    default PipelineContext executeMetaPipeline(PipelineContext toProcess, JSONObject metaPipeline) {
+        return toProcess;
+    }
 
     /**
-     * Run a pipeline and return the result.
+     * <code>processor</code> will be used to iterate across <code>metaSteps</code> to process <code>toProcess</code>.
      *
-     * @param <R>     the type of the result of a pipeline run.
+     * @param toProcess the thing to process.
+     * @param metaSteps contains the JSONObjects to process.
      *
-     * @param name    the name of the pipeline to execute.
-     * @param context the object to use when running a pipeline.
-     *
-     * @return the result of a pipeline run.
-     *
-     * @throws java.lang.Exception if any problems arise running the pipeline entitled <code>name</code> to process <code>context</code>.
+     * @return the result of processing.
      */
-    <R> R runPipeline(String name, PipelineContext context) throws Exception;
+    default PipelineContext executeMetaStepList(PipelineContext toProcess, List<JSONObject> metaSteps) {
+        return toProcess;
+    }
 
     /**
-     * Run a pipeline as denoted in the meta format <code>metaPipeline</code>. What we will do is run all the JSONObjects in metaPipeline as steps.
-     * Think of it as an anonymous pipeline (no name).
+     * Execute against metaPipeline.
+     * g.
      *
-     * @param <R>          the type of the result of a pipeline run.
+     * @param toProcess the thing to process.
+     * @param metaSteps Contains
      *
-     * @param metaPipeline the meta version of a pipeline to execute.
-     * @param context      the object to use when running a pipeline.
-     *
-     * @return the result of a pipeline run.
-     *
-     * @throws java.lang.Exception if any problems arise running the pipeline entitled <code>name</code> to process <code>context</code>.
+     * @return the result of processing.
      */
-    <R> R runJsonPipeline(List<JSONObject> metaPipeline, PipelineContext context) throws Exception;
+    default PipelineContext executeMetaStepArray(PipelineContext toProcess, JSONArray metaSteps) {
+        return toProcess;
+    }
 
     /**
-     * Run a pipeline as denoted in the meta format <code>metaPipeline</code>. What we will do is run all the JSONObjects in metaPipeline as steps.
-     * Think of it as an anonymous pipeline (no name).
+     * Execute against metaPipeline.
      *
-     * @param <R>          the type of the result of a pipeline run.
+     * @param toProcess the thing to process.
+     * @param metaSteps contains the JSONObject to process.
      *
-     * @param metaPipeline the meta version of a pipeline to execute.
-     * @param context      the object to use when running a pipeline.
+     * @return the result of processing.
+     */
+    default PipelineContext executeMetaStepMaps(PipelineContext toProcess, List<Map> metaSteps) {
+        return toProcess;
+    }
+
+    /**
+     * Run a pipeline whose name is <code>name</code> and return the result.
+     *
+     * @param name      the name of the pipeline to execute.
+     * @param toProcess the object to use when running a pipeline.
      *
      * @return the result of a pipeline run.
      *
-     * @throws java.lang.Exception if any problems arise running the pipeline entitled <code>name</code> to process <code>context</code>.
      */
-    <R> R runMapPipeline(List<Map> metaPipeline, PipelineContext context) throws Exception;
+    default PipelineContext executeNamed(String name, PipelineContext toProcess) {
+        return toProcess;
+    }
 }

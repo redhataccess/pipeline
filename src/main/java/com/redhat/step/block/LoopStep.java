@@ -1,6 +1,7 @@
 package com.redhat.step.block;
 
-import com.redhat.pipeline.PipelineContext;
+import com.redhat.common.utils.Strings;
+import com.redhat.step.StepContext;
 
 public class LoopStep extends AbstractBlockStep {
 
@@ -17,7 +18,7 @@ public class LoopStep extends AbstractBlockStep {
     }
 
     public LoopStep() {
-        this.var = generateUniqueVariableName("loop");
+        this.var = Strings.generateUniqueStringForPrefix("loop");
         this.times = 0;
     }
 
@@ -38,11 +39,11 @@ public class LoopStep extends AbstractBlockStep {
     }
 
     @Override
-    public PipelineContext process(final PipelineContext context) throws Exception {
+    public StepContext process(final StepContext context) {
         logInfo("Executing for [", getTimes(), "] iterations");
 
-        for (int index = 0; index < getTimes() && !context.isDone(); index++) {
-            context.getStepContext().getStepVars().set(var, index);
+        for (int index = 0; index < getTimes() && !context.getPipelineContext().isDone(); index++) {
+            context.getStepVars().set(getVar(), index);
             super.process(context);
         }
 

@@ -2,6 +2,7 @@ package com.redhat.step.logging;
 
 import com.redhat.pipeline.PipelineContext;
 import com.redhat.step.AbstractStep;
+import com.redhat.step.StepContext;
 
 /**
  * Abstract base class if we want to log something as a message plus the thing
@@ -28,8 +29,8 @@ public abstract class AbstractLogStep extends AbstractStep {
     }
 
     @Override
-    public PipelineContext process(final PipelineContext context) {
-        logInfo(null == getMsg() ? "" : msg, ": ", computeMsgValue(context));
+    public StepContext process(final StepContext context) {
+        logInfo(null == getMsg() ? "" : msg, ": ", computeMsgValue(context.getPipelineContext()));
 
         return context;
     }

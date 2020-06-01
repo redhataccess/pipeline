@@ -1,9 +1,9 @@
 package com.redhat.step.script.mvel.condition;
 
-import com.redhat.pipeline.PipelineContext;
+import com.redhat.step.StepContext;
 import java.util.ArrayList;
 import java.util.List;
-import org.json.JSONObject;
+import java.util.Map;
 
 /**
  * Acts as a basic if/else statement. While silly the then block can be empty
@@ -12,48 +12,42 @@ import org.json.JSONObject;
  */
 public class IfStep extends AbstractMvelConditionStep {
 
-    private List<JSONObject> elseBlock;
+    private List<Map> elseBlock;
 
-    void runBlock(final PipelineContext context, final List<JSONObject> blockToRun, final String blockType) throws Exception {
-        try {
-            context.getPipelineExecutor().runJsonPipeline(blockToRun, context);
-        } catch (final Exception exception) {
-            logError(exception, "Trouble running [", blockType, "]");
+    StepContext runBlock(final StepContext context, final List<Map> blockToRun, final String blockType) {
+        context.getPipelineContext().getPipelineExecutor().executeMetaStepMaps(context.getPipelineContext(), blockToRun);
 
-            throw exception;
-        }
+        return context;
     }
 
-    void runBlock(final PipelineContext context, final boolean testCondition) throws Exception {
-        runBlock(context, testCondition ? getThen() : getElse(), testCondition ? "if" : "else");
+    StepContext runBlock(final StepContext context, final boolean testCondition) {
+        return runBlock(context, testCondition ? getThen() : getElse(), testCondition ? "if" : "else");
     }
 
     public IfStep() {
         elseBlock = new ArrayList<>();
     }
 
-    public void setThen(final List<JSONObject> thenBlock) {
+    public void setThen(final List<Map> thenBlock) {
         setBlock(thenBlock);
     }
 
-    public List<JSONObject> getThen() {
+    public List<Map> getThen() {
         return getBlock();
     }
 
-    public void setElse(final List<JSONObject> elseBlock) {
+    public void setElse(final List<Map> elseBlock) {
         this.elseBlock = elseBlock;
     }
 
-    public List<JSONObject> getElse() {
+    public List<Map> getElse() {
         return elseBlock;
     }
 
     @Override
-    public PipelineContext process(final PipelineContext context) throws Exception {
+    public StepContext process(final StepContext context) {
         ensureCondition("Missing 'then' block for if element!");
 
-        runBlock(context, isConditionMet(executeScriptStatement(context, getCondition())));
-
-        return context;
+        return runBlock(context, isConditionMet(executeScriptStatement(context, getCondition())));
     }
 }

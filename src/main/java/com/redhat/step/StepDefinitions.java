@@ -27,7 +27,6 @@ public interface StepDefinitions extends JsonDefinitions<Class> {
      *
      * @return the a new instance of a result.
      *
-     * @throws Exception if any problem arise creating the result
      */
-    Step create(String name, JSONObject initState) throws Exception;
+    Step create(String name, JSONObject initState);
 }

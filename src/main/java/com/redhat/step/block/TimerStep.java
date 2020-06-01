@@ -1,29 +1,32 @@
 package com.redhat.step.block;
 
-import com.redhat.pipeline.PipelineContext;
+import com.redhat.common.utils.Strings;
+import com.redhat.step.StepContext;
 
 public class TimerStep extends AbstractBlockStep {
 
     private String var;
 
-    void setVar(final PipelineContext context, final long totalTime) {
-        context.getStepContext().getStepVars().set(getVar(), totalTime);
+    void setVar(final StepContext context, final long totalTime) {
+        context.getStepVars().set(getVar(), totalTime);
 
         logIfDebug("timer [", getVar(), "] -> [", totalTime, "]");
     }
 
-    void setVar(final PipelineContext context, final long startTime, final long endTime) {
+    void setVar(final StepContext context, final long startTime, final long endTime) {
         setVar(context, endTime - startTime);
     }
 
-    void processContext(final PipelineContext context, final long startTime) throws Exception {
+    StepContext processContext(final StepContext context, final long startTime) {
         super.process(context);
 
         setVar(context, startTime, System.currentTimeMillis());
+
+        return context;
     }
 
     public TimerStep() {
-        this.var = generateUniqueVariableName("timer");
+        this.var = Strings.generateUniqueStringForPrefix("timer");
     }
 
     public String getVar() {
@@ -35,9 +38,7 @@ public class TimerStep extends AbstractBlockStep {
     }
 
     @Override
-    public PipelineContext process(final PipelineContext context) throws Exception {
-        processContext(context, System.currentTimeMillis());
-
-        return context;
+    public StepContext process(final StepContext context) {
+        return processContext(context, System.currentTimeMillis());
     }
 }

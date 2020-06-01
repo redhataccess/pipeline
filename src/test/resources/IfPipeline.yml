@@ -1,0 +1,24 @@
+name:           If
+description:    A nice if pipeline
+result:         retVal
+
+steps:
+    - dvar:
+        description:  Dynamic Variable
+        var1: "'alpha'"
+        var2: 1000
+        var3: var2 * 100
+        var4: "'Hello' + var1"
+        
+    - if:
+        description:  See if we got a thing
+        condition:    var3 > 10000
+        then:
+            - logMsg:
+                msg:  In the then portion [${var3}]
+                
+            - logContext:
+                msg:  "Our context contains:  "
+              
+    - result:
+        value:    ${var2}

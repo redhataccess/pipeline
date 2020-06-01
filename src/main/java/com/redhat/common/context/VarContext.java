@@ -15,6 +15,9 @@ public interface VarContext {
      */
     <T> T get(String name);
 
+    /**
+     * Used when computing a value. If value is null, we return defaultValue.
+     */
     default <T> T computeValue(final T value, final T defaultValue) {
         return null != value ? value : defaultValue;
     }

@@ -1,0 +1,31 @@
+---
+name:           DoWhile
+description:    Tests a do-while loop
+
+steps:
+    - dvar:
+        description:  Dynamic Variable
+        loop:    0
+        total:  10
+    
+    - do:
+        block:
+            - logContext:
+                msg:    "Context contains:  "
+            
+            - if:
+                condition:  "loop < total"
+                then:
+                    - logMsg:
+                        msg:    "loop is less than total:  [${loop} < ${total}]"
+                else:
+                    - logMsg:
+                        msg:    "loop AND total:  [${loop} >= ${total}]"
+            
+            - logMsg:
+                    msg:    "Current loop value IN block [${loop}]"
+                    
+            - dvar:
+                loop:  "loop + 1"
+                
+        while:  "loop < total"

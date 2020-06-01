@@ -1,7 +1,7 @@
 package com.redhat.step.control;
 
-import com.redhat.pipeline.PipelineContext;
 import com.redhat.step.AbstractStep;
+import com.redhat.step.StepContext;
 
 /**
  * Assigns the pipeline results to the context results variable and marks the process done.
@@ -35,9 +35,9 @@ public class ReturnStep extends AbstractStep {
     }
 
     @Override
-    public PipelineContext process(final PipelineContext context) {
-        context.setResult(context.getStepContext().getStepVars().get(var));
-        context.setIsDone(true);
+    public StepContext process(final StepContext context) {
+        context.getPipelineContext().setResult(context.getStepVars().get(var));
+        context.getPipelineContext().setIsDone(true);
 
         return context;
     }

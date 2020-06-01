@@ -33,13 +33,18 @@ public abstract class AbstractJsonBase extends AbstractBase {
     @JsonAnySetter
     protected void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
-        this.orderedAdditionalProperties.add(name);
+        this.orderedAdditionalProperties.add(0, name);
 
-        logWarning("Received unmanaged property [", name, "] -> [", value, "]");
+        logWarning("Received unmanaged property [", name, "] -> [", value, "]  Allowing sub-class to process");
 
         processUnmanagedProperty(name, value);
     }
 
-    protected void processUnmanagedProperty(final String name, final Object value) {
-    }
+    /**
+     * Called when we receive an unmanaged property.
+     *
+     * @param name  the name of the unmanaged property.
+     * @param value the value of the unmanaged property.
+     */
+    protected abstract void processUnmanagedProperty(final String name, final Object value);
 }

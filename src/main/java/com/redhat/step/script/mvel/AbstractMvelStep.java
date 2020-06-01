@@ -1,6 +1,6 @@
 package com.redhat.step.script.mvel;
 
-import com.redhat.pipeline.PipelineContext;
+import com.redhat.step.StepContext;
 import com.redhat.step.script.AbstractScriptStep;
 import java.util.Map;
 import org.mvel2.MVEL;
@@ -20,7 +20,7 @@ public abstract class AbstractMvelStep extends AbstractScriptStep {
      * {@inheritDoc}
      */
     @Override
-    protected Object executeScriptStatement(final PipelineContext context, final Map scriptVars, final String scriptStatement) throws Exception {
+    protected Object executeScriptStatement(final StepContext context, final Map scriptVars, final String scriptStatement) {
         return MVEL.executeExpression(MVEL.compileExpression(scriptStatement, new ParserContext()), scriptVars);
     }
 }

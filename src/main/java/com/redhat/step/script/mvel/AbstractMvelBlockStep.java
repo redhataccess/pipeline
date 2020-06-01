@@ -1,11 +1,12 @@
 package com.redhat.step.script.mvel;
 
+import java.util.ArrayList;
 import java.util.List;
-import org.json.JSONObject;
+import java.util.Map;
 
 public abstract class AbstractMvelBlockStep extends AbstractMvelStep {
 
-    private List<JSONObject> block;
+    private List<Map> block;
 
     protected void ensureBlock() {
         if (null == getBlock()) {
@@ -18,11 +19,11 @@ public abstract class AbstractMvelBlockStep extends AbstractMvelStep {
     protected AbstractMvelBlockStep() {
     }
 
-    public void setBlock(final List<JSONObject> block) {
+    public void setBlock(final List<Map> block) {
         this.block = block;
     }
 
-    public List<JSONObject> getBlock() {
-        return block;
+    public List<Map> getBlock() {
+        return new ArrayList<>(block);
     }
 }

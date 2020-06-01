@@ -6,8 +6,8 @@
     <artifactId>pipeline</artifactId>
     <version>1.0</version>
 
-    <name>Pipeline Redesign</name>
-    <description>Pipeline Redesign</description>
+    <name>Pipeline Library</name>
+    <description>Pipeline Library</description>
 
     <packaging>jar</packaging>
 
@@ -25,7 +25,7 @@
         <com.fasterxml.jackson.dataformat_jackson-dataformat-yaml>2.10.3</com.fasterxml.jackson.dataformat_jackson-dataformat-yaml>
 
         <org.apache.commons_commons-lang3>3.10</org.apache.commons_commons-lang3>
-        <commons-io_commons-io>2.6</commons-io_commons-io>
+        <commons-io_commons-io>2.7</commons-io_commons-io>
 
         <org.apache-extras.beanshell_bsh>2.0b6</org.apache-extras.beanshell_bsh>
         <org.codehaus.groovy_groovy-jsr223>3.0.2</org.codehaus.groovy_groovy-jsr223>

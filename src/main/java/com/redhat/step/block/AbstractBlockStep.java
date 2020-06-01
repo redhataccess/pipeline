@@ -1,29 +1,29 @@
 package com.redhat.step.block;
 
-import com.redhat.pipeline.PipelineContext;
 import com.redhat.step.AbstractStep;
+import com.redhat.step.StepContext;
 import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractBlockStep extends AbstractStep {
 
-    private Map block;
+    private List<Map> block;
 
     protected AbstractBlockStep() {
     }
 
-    public Map getBlock() {
+    public List<Map> getBlock() {
         return block;
     }
 
-    public void setBlock(final Map block) {
+    public void setBlock(final List<Map> block) {
         this.block = block;
     }
 
     @Override
-    public PipelineContext process(final PipelineContext context) throws Exception {
+    public StepContext process(final StepContext context) {
         try {
-            context.getPipelineExecutor().runMapPipeline((List<Map>) getBlock().get("steps"), context);
+            context.getPipelineContext().getPipelineExecutor().executeMetaStepMaps(context.getPipelineContext(), getBlock());
         } catch (final Exception exception) {
             logError(exception, "Trouble running block!");
 

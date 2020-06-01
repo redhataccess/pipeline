@@ -1,7 +1,7 @@
 package com.redhat.step.control;
 
-import com.redhat.pipeline.PipelineContext;
 import com.redhat.step.AbstractStep;
+import com.redhat.step.StepContext;
 
 public class CallStep extends AbstractStep {
 
@@ -19,9 +19,11 @@ public class CallStep extends AbstractStep {
     }
 
     @Override
-    public PipelineContext process(final PipelineContext context) {
+    public StepContext process(final StepContext context) {
+        logInfo("Preparing to call pipeline [", getName(), "[");
+
         try {
-            context.getPipelineExecutor().runPipeline(getName(), context);
+            context.getPipelineContext().getPipelineExecutor().executeNamed(getName(), context.getPipelineContext());
         } catch (final Exception exception) {
             throw new RuntimeException("Problem calling pipeline [" + getName() + "]", exception);
         }

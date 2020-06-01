@@ -1,8 +1,8 @@
 package com.redhat.step;
 
-import com.redhat.common.context.VarContext;
-import com.redhat.pipeline.PipelineContext;
-import java.util.Map;
+import com.redhat.common.AbstractBase;
+import com.redhat.common.utils.Strings;
+import com.redhat.common.utils.VariableExpansionUtils;
 import java.util.Objects;
 import org.json.JSONObject;
 
@@ -11,33 +11,40 @@ import org.json.JSONObject;
  *
  * @author sfloess
  */
-public class VariableExpansionStepPreprocessor implements StepPreprocessor {
-    String replaceVars(final String str, final Map<String, ?> variables) throws Exception {
-        String retVal = str;
+public class VariableExpansionStepPreprocessor extends AbstractBase implements StepPreprocessor {
 
-        for (final String varName : variables.keySet()) {
-            retVal = retVal.replaceAll("\\$\\{" + varName + "}", variables.get(varName).toString());
+    /**
+     * Replace the variables denoted in key if the value of key is a string.
+     */
+    JSONObject replaceVars(final String key, final JSONObject toPrepare, final StepContext context) {
+        if (Strings.isString(toPrepare.get(key))) {
+            toPrepare.put(key, VariableExpansionUtils.replaceVars(toPrepare.getString(key), context));
         }
 
-        return retVal;
+        return toPrepare;
     }
 
-    String replaceVars(final String str, final VarContext variables) throws Exception {
-        return replaceVars(str, variables.asMap());
+    /**
+     * Using the variable contexts in <code>context</code>, replace any variable values in <code>toPrepare</code>.
+     */
+    JSONObject replaceVars(final JSONObject toPrepare, final StepContext context) {
+        Objects.requireNonNull(toPrepare, "Must provide a JSON object to preprocess");
+        Objects.requireNonNull(context, "Must provide a context to preprocess");
+
+        for (final String key : toPrepare.keySet()) {
+            replaceVars(key, toPrepare, context);
+        }
+
+        return toPrepare;
     }
 
     /**
      * {@inheritDoc}
      */
-    public JSONObject preprocess(final JSONObject toPreprocess, final PipelineContext context) throws Exception {
-        Objects.requireNonNull(toPreprocess, "Must provide a JSON object to preprocess");
+    public JSONObject prepare(final JSONObject toPrepare, final StepContext context) {
+        Objects.requireNonNull(toPrepare, "Must provide a JSON object to preprocess");
         Objects.requireNonNull(context, "Must provide a context to preprocess");
 
-        return new JSONObject(
-                replaceVars(
-                        replaceVars(replaceVars(toPreprocess.toString(), context.getStepContext().getStepVars()), context.getPipelineVars()
-                        ), context.getGlobalVars()
-                )
-        );
+        return replaceVars(new JSONObject(toPrepare.toString()), context);
     }
 }

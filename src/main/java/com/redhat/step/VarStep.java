@@ -1,19 +1,17 @@
 package com.redhat.step;
 
-import com.redhat.pipeline.PipelineContext;
-
 public class VarStep extends AbstractStep {
 
-    protected void setVar(final PipelineContext context, final String name, final String value) {
+    protected void setVar(final StepContext context, final String name, final String value) {
         logIfDebug("Setting variable [", name, "] -> [", value, "]");
-        context.getStepContext().getStepVars().set(name, value);
+        context.getPipelineContext().getPipelineVars().set(name, value);
     }
 
     public VarStep() {
     }
 
     @Override
-    public PipelineContext process(final PipelineContext context) {
+    public StepContext process(final StepContext context) {
         logIfDebug("Setting variables using: ", getAdditionalProperties());
 
         for (final String key : getOrderedAdditionalProperties()) {

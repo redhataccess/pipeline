@@ -1,6 +1,6 @@
 package com.redhat.step.script.mvel.condition.loop;
 
-import com.redhat.pipeline.PipelineContext;
+import com.redhat.step.StepContext;
 import com.redhat.step.script.mvel.condition.AbstractMvelConditionStep;
 
 /**
@@ -14,18 +14,12 @@ public class WhileStep extends AbstractMvelConditionStep {
     }
 
     @Override
-    public PipelineContext process(final PipelineContext context) throws Exception {
+    public StepContext process(final StepContext context) {
         ensureCondition();
         ensureBlock();
 
-        while (!context.isDone() && isConditionMet(executeScriptStatement(context, getCondition()))) {
-            try {
-                context.getPipelineExecutor().runJsonPipeline(getBlock(), context);
-            } catch (final Exception exception) {
-                logError(exception, "Trouble running while loop's block for condition [", getCondition(), "].  Block = ", getBlock());
-
-                throw exception;
-            }
+        while (!context.getPipelineContext().isDone() && isConditionMet(executeScriptStatement(context, getCondition()))) {
+            context.getPipelineContext().getPipelineExecutor().executeMetaStepMaps(context.getPipelineContext(), getBlock());
         }
 
         return context;

@@ -1,7 +1,6 @@
 package com.redhat.step.script.mvel;
 
-import com.redhat.pipeline.PipelineContext;
-import java.util.Map;
+import com.redhat.step.StepContext;
 
 /**
  * Allows for defining variables in a dynamic way.
@@ -12,20 +11,17 @@ import java.util.Map;
  */
 public class DynamicVarStep extends AbstractMvelStep {
 
-    @Override
-    protected Map createScriptVars(final PipelineContext context) {
-        return context.getStepContext().getStepVars().asMap();
-    }
-
     public DynamicVarStep() {
     }
 
     @Override
-    public PipelineContext process(final PipelineContext context) throws Exception {
+    public StepContext process(final StepContext context) {
         logIfDebug("Processing MVEL dynamic variables using: ", getAdditionalProperties());
 
         for (final String key : getOrderedAdditionalProperties()) {
-            context.getStepContext().getStepVars().set(key, executeScriptStatement(context, getAdditionalProperties().get(key).toString()));
+            logInfo("Key:  ", key);
+            logInfo("Pipeline vars:  ", context.getPipelineContext().getPipelineVars().asMap());
+            context.getPipelineContext().getPipelineVars().set(key, executeScriptStatement(context, getAdditionalProperties().get(key).toString()));
         }
 
         return context;
