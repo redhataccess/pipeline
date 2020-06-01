@@ -1,6 +1,6 @@
 package com.redhat.step.decorator;
 
-import com.redhat.pipeline.PipelineContext;
+import com.redhat.step.StepContext;
 
 /**
  * This step simply ignores processing anything.
@@ -13,7 +13,7 @@ public class SkipStep extends AbstractDecoratorStep {
     }
 
     @Override
-    public PipelineContext process(final PipelineContext context) throws Exception {
+    public StepContext process(final StepContext context) {
         logInfo("Skipping step [", getName(), "] -> [", super.getDecoratee(), "]");
 
         return context;

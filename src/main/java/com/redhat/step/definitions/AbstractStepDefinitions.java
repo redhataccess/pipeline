@@ -13,6 +13,20 @@ import org.json.JSONObject;
  * @author sfloess
  */
 public abstract class AbstractStepDefinitions extends AbstractJsonDefinitions<Class> implements StepDefinitions {
+
+    /**
+     * Creates an actual Step whose name is name.
+     *
+     * @param name      the name of the step (not class name).
+     * @param initState the initial state of the step when constructed.
+     * @param stepClass the Step's class impl.
+     *
+     * @return a Step.
+     */
+    Step create(final String name, final JSONObject initState, final Class<Step> stepClass) {
+        return JsonUtils.jsonObjectToObject(initState, Objects.requireNonNull(stepClass, "No step entitled [" + name + "]"));
+    }
+
     /**
      * Default constructor.
      */
@@ -31,7 +45,7 @@ public abstract class AbstractStepDefinitions extends AbstractJsonDefinitions<Cl
      * {@inheritDoc}
      */
     @Override
-    public Step create(final String name, final JSONObject initState) throws Exception {
-        return (Step) JsonUtils.jsonObjectToObject(initState, getDefMap().get(ensureDefinitionName(name)));
+    public Step create(final String name, final JSONObject initState) {
+        return create(ensureDefinitionName(name), initState, getDefMap().get(ensureDefinitionName(name)));
     }
 }

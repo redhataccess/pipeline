@@ -15,7 +15,7 @@ public interface PipelineDefinitions extends JsonDefinitions<JSONObject> {
      * @param name   the name of the pipeline.
      * @param xmlStr the pipeline represented as XML in string format.
      */
-    void defineXmlPipeline(String name, String xmlStr) throws Exception;
+    void defineXmlPipeline(String name, String xmlStr);
 
     /**
      * Defines a pipeline using XML,
@@ -23,7 +23,7 @@ public interface PipelineDefinitions extends JsonDefinitions<JSONObject> {
      * @param name    the name of the pipeline.
      * @param jsonStr the pipeline represented as JSON in string format.
      */
-    void defineJsonPipeline(String name, String jsonStr) throws Exception;
+    void defineJsonPipeline(String name, String jsonStr);
 
     /**
      * Defines a pipeline using XML,
@@ -31,7 +31,7 @@ public interface PipelineDefinitions extends JsonDefinitions<JSONObject> {
      * @param name    the name of the pipeline.
      * @param yamlStr the pipeline represented as YAML in string format.
      */
-    void defineYamlPipeline(String name, String yamlStr) throws Exception;
+    void defineYamlPipeline(String name, String yamlStr);
 
     /**
      * Using the definition named <code>name</code>, create a new pipeline.
@@ -40,7 +40,6 @@ public interface PipelineDefinitions extends JsonDefinitions<JSONObject> {
      *
      * @return the a new instance of a pipeline.
      *
-     * @throws Exception if any problem arise creating the pipeline.
      */
-    Pipeline create(String name) throws Exception;
+    Pipeline create(String name);
 }

@@ -2,10 +2,10 @@ package com.redhat.pipeline.context;
 
 import com.redhat.common.AbstractBase;
 import com.redhat.common.context.VarContext;
+import com.redhat.global.GlobalContext;
 import com.redhat.pipeline.PipelineContext;
 import com.redhat.pipeline.PipelineDefinitions;
 import com.redhat.pipeline.PipelineExecutor;
-import com.redhat.step.StepContext;
 import java.util.Objects;
 
 /**
@@ -25,11 +25,6 @@ public abstract class AbstractPipelineContext extends AbstractBase implements Pi
     private final PipelineDefinitions pipelineDefintions;
 
     /**
-     * All global variables.
-     */
-    private final VarContext globalVars;
-
-    /**
      * Variables shared across steps;
      */
     private final VarContext pipelineVars;
@@ -45,20 +40,19 @@ public abstract class AbstractPipelineContext extends AbstractBase implements Pi
     private boolean isDone;
 
     /**
-     * When executing a step in a pipeline, this is related to step processing.
+     * Our global context.
      */
-    private final StepContext stepContext;
+    private final GlobalContext globalContext;
 
     /**
      * Mutator constructor.
      */
-    public AbstractPipelineContext(final PipelineExecutor pipelineExecutor, final PipelineDefinitions pipelineDefintions, final VarContext globalVars, final VarContext pipelineVars, final StepContext stepContext) {
+    public AbstractPipelineContext(final PipelineExecutor pipelineExecutor, final PipelineDefinitions pipelineDefintions, final VarContext pipelineVars, final GlobalContext globalContext) {
         this.pipelineExecutor = Objects.requireNonNull(pipelineExecutor, "Cannot have a null pipleline executor");
         this.pipelineDefintions = Objects.requireNonNull(pipelineDefintions, "Cannot have null pipleline definitions");
-        this.globalVars = Objects.requireNonNull(globalVars, "Cannot have null global variables");
         this.pipelineVars = Objects.requireNonNull(pipelineVars, "Cannot have null pipeline variables");
-        this.stepContext = Objects.requireNonNull(stepContext, "Cannot have a null step context");
         this.isDone = false;
+        this.globalContext = Objects.requireNonNull(globalContext, "Cannot have null global contexts");
     }
 
     /**
@@ -75,14 +69,6 @@ public abstract class AbstractPipelineContext extends AbstractBase implements Pi
     @Override
     public PipelineDefinitions getPipelineDefinitions() {
         return pipelineDefintions;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public VarContext getGlobalVars() {
-        return globalVars;
     }
 
     /**
@@ -129,7 +115,7 @@ public abstract class AbstractPipelineContext extends AbstractBase implements Pi
      * {@inheritDoc}
      */
     @Override
-    public StepContext getStepContext() {
-        return stepContext;
+    public GlobalContext getGlobalContext() {
+        return globalContext;
     }
 }

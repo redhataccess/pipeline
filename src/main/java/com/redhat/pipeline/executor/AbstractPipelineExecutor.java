@@ -1,15 +1,15 @@
 package com.redhat.pipeline.executor;
 
-import com.redhat.common.AbstractBase;
-import com.redhat.common.utils.JsonUtils;
+import com.redhat.common.processor.executor.AbstractExecutor;
 import com.redhat.common.utils.Strings;
-import com.redhat.pipeline.DefaultPipeline;
 import com.redhat.pipeline.Pipeline;
 import com.redhat.pipeline.PipelineContext;
 import com.redhat.pipeline.PipelineExecutor;
+import com.redhat.pipeline.PipelineMarkupEnum;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -18,38 +18,7 @@ import org.json.JSONObject;
  *
  * Copyright © 2019 Red Hat, Inc.
  */
-public class AbstractPipelineExecutor extends AbstractBase implements PipelineExecutor {
-    /**
-     * This will run <code>pipeline</code>.
-     *
-     * @param <R>      the type to return.
-     *
-     * @param pipeline the pipeline to run.
-     * @param context  the argument to pass to the pipeline and all it's steps for processing.
-     *
-     * @return the result of the pipeline run.
-     *
-     * @throws Exception if any problems arise while processing <code>context</code>.
-     */
-    <R> R runPipeline(final Pipeline pipeline, final PipelineContext context) throws Exception {
-        Objects.requireNonNull(pipeline, "Cannot run a null pipeline!");
-        Objects.requireNonNull(context, "Cannot process a null context!");
-
-        try {
-            pipeline.preProcess(context);
-            pipeline.process(context);
-            pipeline.postProcess(context);
-        } catch (final Exception exception) {
-            logError("*** Trouble running pipeline ***", exception);
-
-            pipeline.postProcessFailure(context, exception);
-
-            throw exception;
-        }
-
-        return context.getResult();
-    }
-
+public abstract class AbstractPipelineExecutor extends AbstractExecutor<PipelineContext, Pipeline> implements PipelineExecutor {
     /**
      * Default constructor.
      */
@@ -60,43 +29,74 @@ public class AbstractPipelineExecutor extends AbstractBase implements PipelineEx
      * {@inheritDoc}
      */
     @Override
-    public <R> R runMetaPipeline(JSONObject metaPipeline, PipelineContext context) throws Exception {
+    protected PipelineContext doProcess(Pipeline processor, PipelineContext toProcess) {
+        return executeMetaPipeline(toProcess, processor.asJsonObject());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PipelineContext executeMetaPipeline(final PipelineContext toProcess, final JSONObject metaPipeline) {
+        Objects.requireNonNull(toProcess, "Cannot have a null object to process!");
         Objects.requireNonNull(metaPipeline, "Cannot have a null meta pipeline!");
-        Objects.requireNonNull(context, "Cannot have a null context!");
 
-        return runPipeline(new DefaultPipeline(metaPipeline), context);
+        return executeMetaStepArray(toProcess, metaPipeline.getJSONArray(PipelineMarkupEnum.STEPS.getName()));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> R runPipeline(String name, PipelineContext context) throws Exception {
-        Strings.require(name, "Cannot have an empty/blank/null name!");
-        Objects.requireNonNull(context, "Cannot have a null context!");
+    public PipelineContext executeMetaStepList(final PipelineContext toProcess, final List<JSONObject> metaSteps) {
+        Objects.requireNonNull(toProcess, "Cannot have a null object to process!");
+        Objects.requireNonNull(metaSteps, "Cannot have null meta steps!");
 
-        return runPipeline(context.getPipelineDefinitions().create(name), context);
+        for (final JSONObject metaStep : metaSteps) {
+            toProcess.getStepContext().getStepExecutor().executeMetaStep(toProcess.getStepContext(), metaStep);
+        }
+
+        return toProcess;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> R runJsonPipeline(List<JSONObject> metaPipeline, PipelineContext context) throws Exception {
-        Objects.requireNonNull(metaPipeline, "Cannot have a null meta steps!");
-        Objects.requireNonNull(context, "Cannot have a null context!");
+    public PipelineContext executeMetaStepArray(final PipelineContext toProcess, final JSONArray metaSteps) {
+        Objects.requireNonNull(toProcess, "Cannot have a null object to process!");
+        Objects.requireNonNull(metaSteps, "Cannot have null meta steps!");
 
-        return runPipeline(new DefaultPipeline(metaPipeline), context);
+        for (int index = 0; index < metaSteps.length(); index++) {
+            toProcess.getStepContext().getStepExecutor().executeMetaStep(toProcess.getStepContext(), metaSteps.getJSONObject(index));
+        }
+
+        return toProcess;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> R runMapPipeline(List<Map> metaPipeline, PipelineContext context) throws Exception {
-        Objects.requireNonNull(metaPipeline, "Cannot have a null meta steps!");
-        Objects.requireNonNull(context, "Cannot have a null context!");
+    public PipelineContext executeMetaStepMaps(final PipelineContext toProcess, final List<Map> metaSteps) {
+        Objects.requireNonNull(toProcess, "Cannot have a null object to process!");
+        Objects.requireNonNull(metaSteps, "Cannot have null meta steps!");
 
-        return runPipeline(new DefaultPipeline(JsonUtils.toJsonList(metaPipeline), false), context);
+        for (final Map map : metaSteps) {
+            toProcess.getStepContext().getStepExecutor().executeMetaStep(toProcess.getStepContext(), new JSONObject(map));
+        }
+
+        return toProcess;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PipelineContext executeNamed(final String name, final PipelineContext toProcess) {
+        Strings.require(name, "Must provide a name of a pipeline to execute!");
+        Objects.requireNonNull(toProcess, "Must provide a pipeline context to process!");
+
+        return executeProcessor(toProcess.getPipelineDefinitions().create(name), toProcess);
     }
 }

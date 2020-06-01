@@ -1,6 +1,5 @@
 package com.redhat.step;
 
-import com.redhat.pipeline.PipelineContext;
 import org.json.JSONObject;
 
 /**
@@ -9,5 +8,5 @@ import org.json.JSONObject;
  * @author sfloess
  */
 public interface StepPreprocessor {
-    JSONObject preprocess(JSONObject toPreprocess, PipelineContext context) throws Exception;
+    JSONObject prepare(JSONObject toPreprocess, StepContext context);
 }

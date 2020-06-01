@@ -1,6 +1,7 @@
 package com.redhat.pipeline;
 
 import com.redhat.common.context.VarContext;
+import com.redhat.global.GlobalContext;
 import com.redhat.step.StepContext;
 
 /**
@@ -22,11 +23,6 @@ public interface PipelineContext {
      * @return
      */
     PipelineDefinitions getPipelineDefinitions();
-
-    /**
-     * Return our global variables. These arre variables shared across all pipeline instances.
-     */
-    VarContext getGlobalVars();
 
     /**
      * Return our pipeline variables. These are shared variables across a pipeline run/instance.
@@ -62,6 +58,11 @@ public interface PipelineContext {
      * @param isDone
      */
     boolean isDone();
+
+    /**
+     * Return the global context.
+     */
+    GlobalContext getGlobalContext();
 
     /**
      * Return the step context.

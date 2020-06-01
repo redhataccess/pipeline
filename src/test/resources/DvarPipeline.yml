@@ -1,0 +1,21 @@
+---
+name:   dvar
+description:    Tests a dynamic variable
+
+steps:
+    - dvar:
+        val1:   "'alpha'"
+        val2:   10
+        val3:   val2 * 100
+        val4:   "'Hello ' + val1 + ' - ' + val3"
+        
+    - logMsg:
+        msg:    "Computed val3: [${val3}]     val4: [${val4}]"
+        
+    - dvar:
+        val3:   "val3 + 50"
+        
+    - logMsg:
+        msg:    "Computed val3: [${val3}]     val4: [${val4}]"
+        
+ 

@@ -1,12 +1,11 @@
 package com.redhat.pipeline;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.redhat.common.processor.AbstractProcessor;
 import com.redhat.common.utils.JsonUtils;
-import com.redhat.common.utils.Strings;
-import com.redhat.step.AbstractStep;
-import com.redhat.step.Step;
 import java.util.List;
 import java.util.Objects;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -33,20 +32,17 @@ import org.json.JSONObject;
  *
  * Copyright © 2019 Red Hat, Inc.
  */
-public abstract class AbstractPipeline extends AbstractStep implements Pipeline {
-    public static final String PIPELINE_STEPS_ELEMENT = "steps";
-
-    public static final String STEP_NAME_ATTRIBUTE = "name";
-    public static final String STEP_DESCRIPTION_ATTRIBUTE = "description";
-    public static final String STEP_RESULT_NAME_ATTRIBUTE = "result";
-
-    public static final String STEP_ARGS_ELEMENT = "args";
+public abstract class AbstractPipeline extends AbstractProcessor<PipelineContext> implements Pipeline {
+    /**
+     * Default prefix for name and description.
+     */
+    private static final String DEFAULT_ID_PREFIX = "Annonymously defined pipeline ";
 
     /**
      * JSON representation of a pipeline for processing.
      */
     @JsonIgnore
-    private final JSONObject metaPipeline;
+    private JSONObject metaPipeline;
 
     /**
      * Flag if true, we will clear all step vars per run of each step.
@@ -55,11 +51,70 @@ public abstract class AbstractPipeline extends AbstractStep implements Pipeline 
     private final boolean clearStepVars;
 
     /**
-     * Return our JSON pipeline.
+     * Mutator constructor.
+     *
+     * @paran meta is our JSON representation.
      */
-    @JsonIgnore
-    protected JSONObject getMetaPipeline() {
-        return metaPipeline;
+    protected AbstractPipeline(final JSONObject metaPipeline, final String id, final boolean clearStepVars) {
+        this.metaPipeline = Objects.requireNonNull(metaPipeline, "Cannot have a null representation!");
+        this.clearStepVars = clearStepVars;
+
+        JsonUtils.put(this.metaPipeline, PipelineMarkupEnum.NAME.getName(), id);
+        JsonUtils.put(this.metaPipeline, PipelineMarkupEnum.DESCRIPTION.getName(), id);
+    }
+
+    /**
+     * Mutator constructor.
+     *
+     * @paran meta is our JSON representation.
+     */
+    protected AbstractPipeline(final JSONObject metaPipeline, final boolean clearStepVars) {
+        this(metaPipeline, StringUtils.join(DEFAULT_ID_PREFIX, System.currentTimeMillis()), clearStepVars);
+    }
+
+    /**
+     * Mutator constructor.
+     *
+     * @paran meta is our JSON representation.
+     */
+    protected AbstractPipeline(final JSONObject metaPipeline) {
+        this(metaPipeline, false);
+    }
+
+    /**
+     * Mutator constructor.
+     *
+     * @paran meta is our JSON representation.
+     */
+    protected AbstractPipeline(final JSONArray metaPipeline, final boolean clearStepVars) {
+        this(JsonUtils.toJsonObject(PipelineMarkupEnum.STEPS.getName(), metaPipeline), clearStepVars);
+    }
+
+    /**
+     * Mutator constructor.
+     *
+     * @paran meta is our JSON representation.
+     */
+    protected AbstractPipeline(final JSONArray metaPipeline) {
+        this(metaPipeline, false);
+    }
+
+    /**
+     * Mutator constructor.
+     *
+     * @paran meta is our JSON representation.
+     */
+    protected AbstractPipeline(final List<JSONObject> metaPipeline, final boolean clearStepVars) {
+        this(JsonUtils.toJsonObject(PipelineMarkupEnum.STEPS.getName(), metaPipeline), clearStepVars);
+    }
+
+    /**
+     * Mutator constructor.
+     *
+     * @paran meta is our JSON representation.
+     */
+    protected AbstractPipeline(final List<JSONObject> metaPipeline) {
+        this(metaPipeline, false);
     }
 
     /**
@@ -71,164 +126,18 @@ public abstract class AbstractPipeline extends AbstractStep implements Pipeline 
     }
 
     /**
-     * Set the name and pipeline steps for the meta pipeline.
-     *
-     * @param retVal the object to return.
-     * @param steps  a list of steps.
-     *
-     * @return a populated JSONObject.
+     * {@inheritDoc}
      */
-    JSONObject populateMetaPipeline(final JSONObject retVal, final List<JSONObject> steps) {
-        retVal.put(STEP_NAME_ATTRIBUTE, "Annonymously defined pipeline " + hashCode());
-        retVal.put(STEP_DESCRIPTION_ATTRIBUTE, "An annonymously defined pipeline " + hashCode());
-
-        final JSONArray jsonArray = new JSONArray();
-        for (final JSONObject metaStep : steps) {
-            jsonArray.put(metaStep);
-        }
-
-        retVal.put(PIPELINE_STEPS_ELEMENT, jsonArray);
-
-        return retVal;
-    }
-
-    /**
-     * Convert these steps to a meta pipeline.
-     *
-     * @param steps all the steps in the pipeline.
-     *
-     * @return a meta pipeline.
-     */
-    JSONObject toMetaPipeline(final List<JSONObject> steps) {
-        return populateMetaPipeline(new JSONObject(), steps);
-    }
-
-    /**
-     * Set a result if there is one to set. If result is null, disregard.
-     *
-     * @param resultVar the name of our step variable that holds a result to set on <code>context</code>.
-     * @param context   holds the result.
-     */
-    void setResult(final String resultVar, final PipelineContext context) {
-        if (null != resultVar) {
-            context.setResult(context.getStepContext().getStepVars().get(resultVar));
-        }
-    }
-
-    /**
-     * The step to process. We'll do the whole step life cycle here: pre/process/[post or post failure] processing.
-     *
-     * @param step      the object to process <code>context</code>.
-     * @param resultVar the name of the result var to pull from the step vars to store as a result. If not set (meaning null), then we will not change
-     *                  the result stored in context.
-     * @param context   the object <code>step</code> is to process.
-     *
-     * @throws Exception if any problems arise using <code>step</code> to process <code>context</code>
-     */
-    void processStep(final Step step, final String resultVar, final PipelineContext context) throws Exception {
-        Objects.requireNonNull(step, "Cannot provide a null step object for processing!");
-        Objects.requireNonNull(context, "Cannot provide a null context for processing!");
-
-        if (isClearStepVars()) {
-            context.getStepContext().getStepVars().clear();
-        }
-
-        try {
-            step.preProcess(context);
-
-            step.process(context);
-
-            setResult(resultVar, context);
-
-            step.postProcess(context);
-        } catch (final Exception exception) {
-            step.postProcessFailure(context, exception);
-        }
-    }
-
-    /**
-     * Processes a step backed by metaStep. This will be used to create a Step impl.
-     *
-     * @param metaStep  JSON backed version of a step.
-     * @param stepName  the name of the step to execute.
-     * @param resultVar the var who will contain the result in the step context's variables.
-     * @param context   the object to operate upon.
-     *
-     * @throws Exception if any problems arise processing the step.
-     */
-    void processMetaStep(final JSONObject metaStep, final String stepName, final String resultVar, final PipelineContext context) throws Exception {
-        Objects.requireNonNull(metaStep, "Cannot provide a null JSON object to process for meta-step!");
-        Strings.require(stepName, "Must provide a value for stepName in order to create/execute a step!");
-        Objects.requireNonNull(context, "Cannot provide a null context object for processing for meta-step!");
-
-        processStep(context.getStepContext().getStepDefinitions().create(stepName, context.getStepContext().getStepPreprocessor().preprocess(metaStep, context)), resultVar, context);
-    }
-
-    /**
-     * Process a step whose backed by <code>metaStep</code>. We are after two items: The name attribute abd (to associate with the step impl) and the
-     * args subelement.
-     *
-     * @param metaStep contains all we need to construct a Step impl (name attribute
-     * @param context
-     *
-     * @throws Exception
-     */
-    void processMetaPipelineStep(final JSONObject metaStep, final PipelineContext context) throws Exception {
-        Objects.requireNonNull(metaStep, "Cannot provide a null JSON object to process!");
-        Objects.requireNonNull(context, "Cannot provide a null context object for processing!");
-
-        processMetaStep(JsonUtils.getValue(metaStep, STEP_ARGS_ELEMENT), JsonUtils.getValue(metaStep, STEP_NAME_ATTRIBUTE), JsonUtils.getValue(metaStep, STEP_RESULT_NAME_ATTRIBUTE), context);
-    }
-
-    /**
-     * Process all steps denoted and backed by <code>metaPipeline</code>.
-     *
-     * @param metaPipeline a collection of steps denoted in JSON.
-     * @param context      state to use when processing each step within <code>metaPipeline</code>.
-     *
-     * @return the context.
-     *
-     * @throws Exception if any problem arise processing <code>context</code>.
-     */
-    PipelineContext processMetaPipelineSteps(final JSONArray metaPipeline, final PipelineContext context) throws Exception {
-        Objects.requireNonNull(metaPipeline, "Cannot provide a null JSON array!");
-
-        for (int index = 0; index < metaPipeline.length(); index++) {
-            processMetaPipelineStep(metaPipeline.getJSONObject(index), context);
-        }
-
-        return context;
-    }
-
-    /**
-     * This constructor sets our JSON backed pipeline.
-     *
-     * @param metaPipeline JSON representation of a pipeline.
-     *
-     * @throws IllegalArgumentException if metaPipeline is null.
-     */
-    protected AbstractPipeline(final JSONObject metaPipeline, final boolean clearStepVars) throws Exception {
-        this.metaPipeline = new JSONObject(Objects.requireNonNull(metaPipeline, "Cannot provide a null JSON object!").toString());
-        this.clearStepVars = clearStepVars;
-    }
-
-    /**
-     * This constructor sets our JSON backed pipeline.
-     *
-     * @param metaPipeline JSON representation of a pipeline.
-     *
-     * @throws IllegalArgumentException if metaPipeline is null.
-     */
-    protected AbstractPipeline(final List<JSONObject> metaPipeline, final boolean clearStepVars) throws Exception {
-        this.metaPipeline = toMetaPipeline(metaPipeline);
-        this.clearStepVars = clearStepVars;
+    @Override
+    public PipelineContext process(final PipelineContext context) {
+        return Objects.requireNonNull(context, "Cannot have a null context to process!").getPipelineExecutor().executeProcessor(this, context);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public PipelineContext process(final PipelineContext context) throws Exception {
-        return processMetaPipelineSteps(getMetaPipeline().getJSONArray(PIPELINE_STEPS_ELEMENT), context);
+    public JSONObject asJsonObject() {
+        return new JSONObject(metaPipeline.toString());
     }
 }

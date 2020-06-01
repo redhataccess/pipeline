@@ -1,0 +1,15 @@
+name:  My test
+description:  Tests a loop pipeline
+
+steps:
+  - loop:
+        description:  Loop a number of times
+        var: fooo
+        times: 5
+
+        block:
+            - logMsg:
+                msg:  In loop [${fooo}]
+
+            - logMsg:
+                msg:  In [${fooo}]

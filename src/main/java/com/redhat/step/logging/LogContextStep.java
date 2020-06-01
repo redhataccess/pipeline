@@ -6,6 +6,6 @@ public class LogContextStep extends AbstractLogStep {
 
     @Override
     protected String computeMsgValue(final PipelineContext context) {
-        return context.toString();
+        return context.getPipelineVars().asMap().toString();
     }
 }

@@ -1,6 +1,7 @@
 package com.redhat.pipeline;
 
 import java.util.List;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -18,7 +19,7 @@ public final class DefaultPipeline extends AbstractPipeline {
      *
      * @throws IllegalArgumentException if metaPipeline is null.
      */
-    public DefaultPipeline(final JSONObject metaPipeline, final boolean clearStepVars) throws Exception {
+    public DefaultPipeline(final JSONObject metaPipeline, final boolean clearStepVars) {
         super(metaPipeline, clearStepVars);
     }
 
@@ -29,7 +30,7 @@ public final class DefaultPipeline extends AbstractPipeline {
      *
      * @throws IllegalArgumentException if metaPipeline is null.
      */
-    public DefaultPipeline(final JSONObject metaPipeline) throws Exception {
+    public DefaultPipeline(final JSONObject metaPipeline) {
         this(metaPipeline, true);
     }
 
@@ -40,7 +41,7 @@ public final class DefaultPipeline extends AbstractPipeline {
      *
      * @throws IllegalArgumentException if metaPipeline is null.
      */
-    public DefaultPipeline(final List<JSONObject> metaPipeline, final boolean clearStepVars) throws Exception {
+    public DefaultPipeline(final List<JSONObject> metaPipeline, final boolean clearStepVars) {
         super(metaPipeline, clearStepVars);
     }
 
@@ -51,7 +52,29 @@ public final class DefaultPipeline extends AbstractPipeline {
      *
      * @throws IllegalArgumentException if metaPipeline is null.
      */
-    public DefaultPipeline(final List<JSONObject> metaPipeline) throws Exception {
+    public DefaultPipeline(final List<JSONObject> metaPipeline) {
+        this(metaPipeline, true);
+    }
+
+    /**
+     * This constructor sets our JSON backed pipeline and assumes the steps are those denoted in metaPipeline.
+     *
+     * @param metaPipeline steps for the meta pipeline.
+     *
+     * @throws IllegalArgumentException if metaPipeline is null.
+     */
+    public DefaultPipeline(final JSONArray metaPipeline, final boolean clearStepVars) {
+        super(metaPipeline, clearStepVars);
+    }
+
+    /**
+     * This constructor sets our JSON backed pipeline and assumes the steps are those denoted in metaPipeline.
+     *
+     * @param metaPipeline steps for the meta pipeline.
+     *
+     * @throws IllegalArgumentException if metaPipeline is null.
+     */
+    public DefaultPipeline(final JSONArray metaPipeline) {
         this(metaPipeline, true);
     }
 }

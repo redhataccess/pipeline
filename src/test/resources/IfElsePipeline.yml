@@ -1,0 +1,25 @@
+---
+name:           IfElse
+description:    Tests if/else
+
+steps:
+    - dvar:
+        val1: "'alpha'"
+        val2: 10
+        val3: "val2 * 100"
+        val4: "'Hello ' + val1 + ' ' + val3"
+
+    - if:
+        condition: "val3 > 10000"
+        then:
+            - logMsg:
+                msg: "In the then portion [${val3}]"
+                result:  Val 3 wins [${val3}]
+                
+        else:
+            - logMsg:
+                msg:    "In the else portion [${val4}]"
+                result:  Val 4 wins [${val4}]
+
+    - logContext:
+        msg:  "Our context contains:  "

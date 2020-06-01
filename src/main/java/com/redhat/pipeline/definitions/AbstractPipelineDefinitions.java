@@ -1,8 +1,8 @@
 package com.redhat.pipeline.definitions;
 
-import com.redhat.pipeline.DefaultPipeline;
 import com.redhat.common.AbstractJsonDefinitions;
 import com.redhat.common.utils.JsonUtils;
+import com.redhat.pipeline.DefaultPipeline;
 import com.redhat.pipeline.Pipeline;
 import com.redhat.pipeline.PipelineDefinitions;
 import org.json.JSONObject;
@@ -23,7 +23,7 @@ public abstract class AbstractPipelineDefinitions extends AbstractJsonDefinition
      * {@inheritDoc}
      */
     @Override
-    public void defineJsonPipeline(final String name, final String jsonStr) throws Exception {
+    public void defineJsonPipeline(final String name, final String jsonStr) {
         getDefMap().put(name, JsonUtils.jsonStrToJsonObject(jsonStr));
     }
 
@@ -31,7 +31,7 @@ public abstract class AbstractPipelineDefinitions extends AbstractJsonDefinition
      * {@inheritDoc}
      */
     @Override
-    public void defineXmlPipeline(final String name, final String xmlStr) throws Exception {
+    public void defineXmlPipeline(final String name, final String xmlStr) {
         getDefMap().put(name, JsonUtils.xmlStrToJsonObject(xmlStr));
     }
 
@@ -39,7 +39,7 @@ public abstract class AbstractPipelineDefinitions extends AbstractJsonDefinition
      * {@inheritDoc}
      */
     @Override
-    public void defineYamlPipeline(final String name, final String yamlStr) throws Exception {
+    public void defineYamlPipeline(final String name, final String yamlStr) {
         getDefMap().put(name, JsonUtils.yamlStrToJsonObject(yamlStr));
     }
 
@@ -47,7 +47,7 @@ public abstract class AbstractPipelineDefinitions extends AbstractJsonDefinition
      * {@inheritDoc}
      */
     @Override
-    public Pipeline create(String name) throws Exception {
+    public Pipeline create(String name) {
         return new DefaultPipeline(getDefMap().get(ensureDefinitionName(name)));
     }
 }

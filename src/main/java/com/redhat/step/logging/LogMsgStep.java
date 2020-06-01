@@ -1,7 +1,7 @@
 package com.redhat.step.logging;
 
-import com.redhat.pipeline.PipelineContext;
 import com.redhat.step.AbstractStep;
+import com.redhat.step.StepContext;
 
 /**
  * This class is a little different than the other AbstractLogStep subclasses.
@@ -25,7 +25,7 @@ public class LogMsgStep extends AbstractStep {
     }
 
     @Override
-    public PipelineContext process(final PipelineContext context) {
+    public StepContext process(final StepContext context) {
         logInfo("msg [", getMsg(), "]");
 
         return context;
