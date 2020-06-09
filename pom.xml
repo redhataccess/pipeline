@@ -150,4 +150,17 @@
 			<scope>test</scope>
 		</dependency>
     </dependencies>
+
+	<profiles>
+		<profile>
+			<id>release</id>
+			<distributionManagement>
+				<repository>
+					<id>ssh-repository</id>
+					<name>GSS RDU Repo</name>
+					<url>sftp://root@gss-rdu-repo.usersys.redhat.com/var/repo/maven/release</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+    </profiles>
 </project>
