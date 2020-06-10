@@ -35,6 +35,7 @@
 
         <org.apache.maven.wagon_wagon-ssh>2.8</org.apache.maven.wagon_wagon-ssh>
         <org.apache.maven.plugins_maven-install-plugin>2.5.2</org.apache.maven.plugins_maven-install-plugin>
+        <org.apache.maven.plugins_maven-deploy-plugin>2.8.2</org.apache.maven.plugins_maven-deploy-plugin>
         <org.slf4j_slf4j-log4j12>1.7.30</org.slf4j_slf4j-log4j12>
         <junit_junit>4.13</junit_junit>
         <org.mockito_mockito-all>1.10.19</org.mockito_mockito-all>
@@ -54,6 +55,12 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-install-plugin</artifactId>
                 <version>${org.apache.maven.plugins_maven-install-plugin}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>${org.apache.maven.plugins_maven-deploy-plugin}</version>
             </plugin>
 
             <plugin>
