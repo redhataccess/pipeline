@@ -20,9 +20,9 @@
 
         <org.jboss.logging_jboss-logging>3.4.1.Final</org.jboss.logging_jboss-logging>
         <org.json_json>20190722</org.json_json>
-        <com.fasterxml.jackson.core_jackson-databind>2.10.3</com.fasterxml.jackson.core_jackson-databind>
-        <com.fasterxml.jackson.dataformat_jackson-dataformat-xml>2.10.3</com.fasterxml.jackson.dataformat_jackson-dataformat-xml>
-        <com.fasterxml.jackson.dataformat_jackson-dataformat-yaml>2.10.3</com.fasterxml.jackson.dataformat_jackson-dataformat-yaml>
+        <com.fasterxml.jackson.core_jackson-databind>2.11.0</com.fasterxml.jackson.core_jackson-databind>
+        <com.fasterxml.jackson.dataformat_jackson-dataformat-xml>2.11.0</com.fasterxml.jackson.dataformat_jackson-dataformat-xml>
+        <com.fasterxml.jackson.dataformat_jackson-dataformat-yaml>2.11.0</com.fasterxml.jackson.dataformat_jackson-dataformat-yaml>
 
         <org.apache.commons_commons-lang3>3.10</org.apache.commons_commons-lang3>
         <commons-io_commons-io>2.7</commons-io_commons-io>
