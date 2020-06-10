@@ -33,12 +33,21 @@
         <org.python_jython>2.7.2</org.python_jython>
         <org.jruby_jruby>9.2.11.1</org.jruby_jruby>
 
+        <org.apache.maven.wagon_wagon-ssh>3.4.1</org.apache.maven.wagon_wagon-ssh>
         <org.slf4j_slf4j-log4j12>1.7.30</org.slf4j_slf4j-log4j12>
         <junit_junit>4.13</junit_junit>
         <org.mockito_mockito-all>1.10.19</org.mockito_mockito-all>
     </properties>
 
     <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
+                <version>${org.apache.maven.wagon_wagon-ssh}</version>
+            </extension>
+        </extensions>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
