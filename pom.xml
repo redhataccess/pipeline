@@ -4,7 +4,7 @@
 
     <groupId>com.redhat.gss</groupId>
     <artifactId>pipeline</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
 
     <name>GSS Pipeline Library</name>
     <description>GSS Pipeline Library</description>
@@ -18,8 +18,8 @@
 
         <java_version>1.8</java_version>
 
-        <org.jboss.logging_jboss-logging>3.4.1.Final</org.jboss.logging_jboss-logging>
-        <org.json_json>20190722</org.json_json>
+        <org.jboss.logging_jboss-logging>3.4.1.Final-redhat-00001</org.jboss.logging_jboss-logging>
+        <org.json_json>20200518</org.json_json>
         <com.fasterxml.jackson.core_jackson-databind>2.11.0</com.fasterxml.jackson.core_jackson-databind>
         <com.fasterxml.jackson.dataformat_jackson-dataformat-xml>2.11.0</com.fasterxml.jackson.dataformat_jackson-dataformat-xml>
         <com.fasterxml.jackson.dataformat_jackson-dataformat-yaml>2.11.0</com.fasterxml.jackson.dataformat_jackson-dataformat-yaml>
@@ -28,20 +28,20 @@
         <commons-io_commons-io>2.7</commons-io_commons-io>
 
         <org.apache-extras.beanshell_bsh>2.0b6</org.apache-extras.beanshell_bsh>
-        <org.codehaus.groovy_groovy-jsr223>3.0.2</org.codehaus.groovy_groovy-jsr223>
-        <org.codehaus.groovy_mvel2>2.4.7.Final</org.codehaus.groovy_mvel2>
+        <org.codehaus.groovy_groovy-jsr223>3.0.4</org.codehaus.groovy_groovy-jsr223>
+        <org.codehaus.groovy_mvel2>2.4.8.Final</org.codehaus.groovy_mvel2>
         <org.python_jython>2.7.2</org.python_jython>
         <org.jruby_jruby>9.2.11.1</org.jruby_jruby>
 
         <org.apache.maven.wagon_wagon-ssh>2.8</org.apache.maven.wagon_wagon-ssh>
 
-        <org.apache.maven.plugins_maven-install-plugin>2.5.2</org.apache.maven.plugins_maven-install-plugin>
-        <org.apache.maven.plugins_maven-deploy-plugin>2.8.2</org.apache.maven.plugins_maven-deploy-plugin>
-        <org.apache.maven.plugins_maven-release-plugin>2.5.3</org.apache.maven.plugins_maven-release-plugin>
+        <org.apache.maven.plugins_maven-install-plugin>3.0.0-M1</org.apache.maven.plugins_maven-install-plugin>
+        <org.apache.maven.plugins_maven-deploy-plugin>3.0.0-M1</org.apache.maven.plugins_maven-deploy-plugin>
+        <org.apache.maven.plugins_maven-release-plugin>3.0.0-M1</org.apache.maven.plugins_maven-release-plugin>
 
-        <org.slf4j_slf4j-log4j12>1.7.30</org.slf4j_slf4j-log4j12>
+        <org.slf4j_slf4j-log4j12>2.0.0-alpha1</org.slf4j_slf4j-log4j12>
         <junit_junit>4.13</junit_junit>
-        <org.mockito_mockito-all>1.10.19</org.mockito_mockito-all>
+        <org.mockito_mockito-all>2.0.2-beta</org.mockito_mockito-all>
     </properties>
 
     <build>
