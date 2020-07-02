@@ -4,7 +4,7 @@
 
     <groupId>com.redhat.gss</groupId>
     <artifactId>pipeline</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
 
     <name>GSS Pipeline Library</name>
     <description>GSS Pipeline Library</description>
@@ -20,9 +20,9 @@
 
         <org.jboss.logging_jboss-logging>3.4.1.Final-redhat-00001</org.jboss.logging_jboss-logging>
         <org.json_json>20200518</org.json_json>
-        <com.fasterxml.jackson.core_jackson-databind>2.11.0</com.fasterxml.jackson.core_jackson-databind>
-        <com.fasterxml.jackson.dataformat_jackson-dataformat-xml>2.11.0</com.fasterxml.jackson.dataformat_jackson-dataformat-xml>
-        <com.fasterxml.jackson.dataformat_jackson-dataformat-yaml>2.11.0</com.fasterxml.jackson.dataformat_jackson-dataformat-yaml>
+        <com.fasterxml.jackson.core_jackson-databind>2.11.1</com.fasterxml.jackson.core_jackson-databind>
+        <com.fasterxml.jackson.dataformat_jackson-dataformat-xml>2.11.1</com.fasterxml.jackson.dataformat_jackson-dataformat-xml>
+        <com.fasterxml.jackson.dataformat_jackson-dataformat-yaml>2.11.1</com.fasterxml.jackson.dataformat_jackson-dataformat-yaml>
 
         <org.apache.commons_commons-lang3>3.10</org.apache.commons_commons-lang3>
         <commons-io_commons-io>2.7</commons-io_commons-io>
@@ -31,7 +31,7 @@
         <org.codehaus.groovy_groovy-jsr223>3.0.4</org.codehaus.groovy_groovy-jsr223>
         <org.codehaus.groovy_mvel2>2.4.8.Final</org.codehaus.groovy_mvel2>
         <org.python_jython>2.7.2</org.python_jython>
-        <org.jruby_jruby>9.2.11.1</org.jruby_jruby>
+        <org.jruby_jruby>9.2.12.0</org.jruby_jruby>
 
         <org.apache.maven.wagon_wagon-ssh>2.8</org.apache.maven.wagon_wagon-ssh>
 
