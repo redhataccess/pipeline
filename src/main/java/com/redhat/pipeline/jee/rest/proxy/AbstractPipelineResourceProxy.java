@@ -3,17 +3,17 @@ package com.redhat.pipeline.jee.rest.proxy;
 import com.redhat.common.jee.rest.proxy.AbstractResourceProxy;
 import com.redhat.common.jee.rest.utils.ResponseEnum;
 import com.redhat.pipeline.jee.ejb.PipelineSvcSingleton;
-import com.redhat.pipeline.jee.rest.PipelineResource;
 import java.util.function.Supplier;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
+import com.redhat.pipeline.jee.rest.AbstractPipelineResource;
 
 /**
  *
  * @author sfloess
  */
-public class PipelineResourceProxy extends AbstractResourceProxy<PipelineSvcSingleton> implements PipelineResource {
+public class AbstractPipelineResourceProxy extends AbstractResourceProxy<PipelineSvcSingleton> implements AbstractPipelineResource {
     public static final String PIPELINE_MESSAGE_HEADER_NAME = "Pipeline-Message";
     public static final String PIPELINE_CODE_HEADER_NAME = "Pipeline-Code";
 
@@ -58,7 +58,7 @@ public class PipelineResourceProxy extends AbstractResourceProxy<PipelineSvcSing
     /**
      * Default constructor.
      */
-    public PipelineResourceProxy() {
+    public AbstractPipelineResourceProxy() {
     }
 
     /**

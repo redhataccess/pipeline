@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
  *
  * @author sfloess
  */
-public interface PipelineResource {
+public interface AbstractPipelineResource {
 
     @PUT
     @Path("/define/{namespace:.+}/{pipeline:.+}")
