@@ -42,9 +42,7 @@ public interface JsonDefinitions<T> {
      *
      * @param name the name of the definition to removeDefinition.
      *
-     * @return the removed definition.
-     *
-     * @throws Exception if any problems arise removing the definition.
+     * @return the removed definition.n.
      */
-    T removeDefinition(String name) throws Exception;
+    T removeDefinition(String name);
 }

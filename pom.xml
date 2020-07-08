@@ -6,19 +6,26 @@
     <artifactId>pipeline</artifactId>
     <version>1.2</version>
 
-    <name>GSS Pipeline Library</name>
-    <description>GSS Pipeline Library</description>
+    <name>Red Hat Pipeline Library</name>
+    <description>Red Hat Pipeline Library</description>
 
     <packaging>jar</packaging>
 
     <properties>
+        <!-- Project support -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <org.apache.maven.plugins_maven-compiler-plugin>3.8.1</org.apache.maven.plugins_maven-compiler-plugin>
 
+        <org.apache.maven.wagon_wagon-ssh>3.4.1</org.apache.maven.wagon_wagon-ssh>
+
+        <org.apache.maven.plugins_maven-install-plugin>3.0.0-M1</org.apache.maven.plugins_maven-install-plugin>
+        <org.apache.maven.plugins_maven-deploy-plugin>3.0.0-M1</org.apache.maven.plugins_maven-deploy-plugin>
+        <org.apache.maven.plugins_maven-release-plugin>3.0.0-M1</org.apache.maven.plugins_maven-release-plugin>
+
         <java_version>1.8</java_version>
 
-        <org.jboss.logging_jboss-logging>3.4.1.Final-redhat-00001</org.jboss.logging_jboss-logging>
+        <!-- External library support -->
         <org.json_json>20200518</org.json_json>
         <com.fasterxml.jackson.core_jackson-databind>2.11.1</com.fasterxml.jackson.core_jackson-databind>
         <com.fasterxml.jackson.dataformat_jackson-dataformat-xml>2.11.1</com.fasterxml.jackson.dataformat_jackson-dataformat-xml>
@@ -27,19 +34,23 @@
         <org.apache.commons_commons-lang3>3.10</org.apache.commons_commons-lang3>
         <commons-io_commons-io>2.7</commons-io_commons-io>
 
+        <com.redhat_commons>1.2</com.redhat_commons>
+
+        <!-- Scripting language support -->
         <org.apache-extras.beanshell_bsh>2.0b6</org.apache-extras.beanshell_bsh>
         <org.codehaus.groovy_groovy-jsr223>3.0.4</org.codehaus.groovy_groovy-jsr223>
         <org.codehaus.groovy_mvel2>2.4.8.Final</org.codehaus.groovy_mvel2>
         <org.python_jython>2.7.2</org.python_jython>
         <org.jruby_jruby>9.2.12.0</org.jruby_jruby>
 
-        <org.apache.maven.wagon_wagon-ssh>2.8</org.apache.maven.wagon_wagon-ssh>
+        <!-- JEE Support -->
+        <javax.servlet_javax.servlet-api>4.0.1</javax.servlet_javax.servlet-api>
+        <javax_javaee-api>8.0.1</javax_javaee-api>
 
-        <org.apache.maven.plugins_maven-install-plugin>3.0.0-M1</org.apache.maven.plugins_maven-install-plugin>
-        <org.apache.maven.plugins_maven-deploy-plugin>3.0.0-M1</org.apache.maven.plugins_maven-deploy-plugin>
-        <org.apache.maven.plugins_maven-release-plugin>3.0.0-M1</org.apache.maven.plugins_maven-release-plugin>
-
+        <!-- Logging support -->
         <org.slf4j_slf4j-log4j12>2.0.0-alpha1</org.slf4j_slf4j-log4j12>
+
+        <!-- Testing support -->
         <junit_junit>4.13</junit_junit>
         <org.mockito_mockito-all>2.0.2-beta</org.mockito_mockito-all>
     </properties>
@@ -86,13 +97,7 @@
     </build>
 
     <dependencies>
-        <dependency>
-            <groupId>org.jboss.logging</groupId>
-            <artifactId>jboss-logging</artifactId>
-            <version>${org.jboss.logging_jboss-logging}</version>
-            <scope>provided</scope>
-        </dependency>
-
+        <!-- External library support -->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
@@ -129,6 +134,12 @@
             <version>${commons-io_commons-io}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.redhat</groupId>
+            <artifactId>commons</artifactId>
+            <version>${com.redhat_commons}</version>
+        </dependency>
+
         <!-- Script Language Support -->
         <dependency>
             <groupId>org.apache-extras.beanshell</groupId>
@@ -158,6 +169,21 @@
             <groupId>org.jruby</groupId>
             <artifactId>jruby</artifactId>
             <version>${org.jruby_jruby}</version>
+        </dependency>
+
+        <!-- JEE Support -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet_javax.servlet-api}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>${javax_javaee-api}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Testing Support -->

@@ -25,7 +25,7 @@ public abstract class AbstractMvelConditionStep extends AbstractMvelBlockStep {
     }
 
     protected boolean isConditionMet(final String conditionStr) {
-        return !StringUtils.isBlank(conditionStr) && ("true".equalsIgnoreCase(conditionStr) || "1".equals(conditionStr));
+        return !StringUtils.isAllBlank(conditionStr) && ("true".equalsIgnoreCase(conditionStr) || "1".equals(conditionStr));
     }
 
     protected boolean isConditionMet(final Object condition) {

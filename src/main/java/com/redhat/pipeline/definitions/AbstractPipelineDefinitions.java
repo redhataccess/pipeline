@@ -1,7 +1,7 @@
 package com.redhat.pipeline.definitions;
 
 import com.redhat.common.AbstractJsonDefinitions;
-import com.redhat.common.utils.JsonUtils;
+import com.redhat.common.json.utils.JsonUtils;
 import com.redhat.pipeline.DefaultPipeline;
 import com.redhat.pipeline.Pipeline;
 import com.redhat.pipeline.PipelineDefinitions;
