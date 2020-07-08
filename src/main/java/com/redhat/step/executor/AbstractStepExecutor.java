@@ -1,7 +1,7 @@
 package com.redhat.step.executor;
 
+import com.redhat.common.json.utils.JsonUtils;
 import com.redhat.common.processor.executor.AbstractExecutor;
-import com.redhat.common.utils.JsonUtils;
 import com.redhat.common.utils.Strings;
 import com.redhat.common.utils.VariableExpansionUtils;
 import com.redhat.step.Step;

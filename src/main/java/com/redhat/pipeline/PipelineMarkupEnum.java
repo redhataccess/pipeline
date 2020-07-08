@@ -1,6 +1,6 @@
 package com.redhat.pipeline;
 
-import com.redhat.common.utils.JsonUtils;
+import com.redhat.common.json.utils.JsonUtils;
 import org.json.JSONObject;
 
 /**
