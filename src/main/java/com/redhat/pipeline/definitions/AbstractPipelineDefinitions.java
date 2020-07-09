@@ -1,7 +1,9 @@
 package com.redhat.pipeline.definitions;
 
 import com.redhat.common.AbstractJsonDefinitions;
-import com.redhat.common.json.utils.JsonUtils;
+import static com.redhat.common.markup.MarkupBuilder.JSON;
+import static com.redhat.common.markup.MarkupBuilder.XML;
+import static com.redhat.common.markup.MarkupBuilder.YAML;
 import com.redhat.pipeline.DefaultPipeline;
 import com.redhat.pipeline.Pipeline;
 import com.redhat.pipeline.PipelineDefinitions;
@@ -24,7 +26,7 @@ public abstract class AbstractPipelineDefinitions extends AbstractJsonDefinition
      */
     @Override
     public void defineJsonPipeline(final String name, final String jsonStr) {
-        getDefMap().put(name, JsonUtils.jsonStrToJsonObject(jsonStr));
+        getDefMap().put(name, JSON.strToJsonObject(jsonStr));
     }
 
     /**
@@ -32,7 +34,7 @@ public abstract class AbstractPipelineDefinitions extends AbstractJsonDefinition
      */
     @Override
     public void defineXmlPipeline(final String name, final String xmlStr) {
-        getDefMap().put(name, JsonUtils.xmlStrToJsonObject(xmlStr));
+        getDefMap().put(name, XML.strToJsonObject(xmlStr));
     }
 
     /**
@@ -40,7 +42,7 @@ public abstract class AbstractPipelineDefinitions extends AbstractJsonDefinition
      */
     @Override
     public void defineYamlPipeline(final String name, final String yamlStr) {
-        getDefMap().put(name, JsonUtils.yamlStrToJsonObject(yamlStr));
+        getDefMap().put(name, YAML.strToJsonObject(yamlStr));
     }
 
     /**

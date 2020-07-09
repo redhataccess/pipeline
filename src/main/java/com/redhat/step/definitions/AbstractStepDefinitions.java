@@ -1,7 +1,7 @@
 package com.redhat.step.definitions;
 
 import com.redhat.common.AbstractJsonDefinitions;
-import com.redhat.common.json.utils.JsonUtils;
+import com.redhat.common.markup.json.JsonUtils;
 import com.redhat.step.Step;
 import com.redhat.step.StepDefinitions;
 import java.util.Objects;
