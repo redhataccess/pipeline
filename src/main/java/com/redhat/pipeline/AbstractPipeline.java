@@ -1,7 +1,7 @@
 package com.redhat.pipeline;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.redhat.common.json.utils.JsonUtils;
+import com.redhat.common.markup.json.JsonUtils;
 import com.redhat.common.processor.AbstractProcessor;
 import java.util.List;
 import java.util.Objects;
