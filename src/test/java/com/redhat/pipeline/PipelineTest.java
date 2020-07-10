@@ -1,6 +1,6 @@
 package com.redhat.pipeline;
 
-import com.redhat.common.markup.json.JsonUtils;
+import static com.redhat.common.markup.MarkupBuilder.YAML;
 import com.redhat.global.GlobalContext;
 import com.redhat.global.context.DefaultGlobalContext;
 import com.redhat.pipeline.context.DefaultPipelineContext;
@@ -46,7 +46,7 @@ public class PipelineTest {
     @Test
     public void test_loadYaml() throws Exception {
         final String yamlStr = IOUtils.toString(getClass().getResourceAsStream("/LoopPipeline.yml"), "UTF-8");
-        final Map map = JsonUtils.createYamlMapper().readValue(yamlStr, HashMap.class);
+        final Map map = YAML.strToObject(yamlStr, HashMap.class);
         final JSONObject json = new JSONObject(map);
         System.out.println(json.toString(4));
     }
