@@ -22,17 +22,17 @@ public interface AbstractPipelineResource {
     Response definePipeline(@PathParam("namespace") String namespace, @PathParam("pipeline") String pipeline, String pipelineDef);
 
     @GET
-    @Path("/define/{namespace:.+}/{pipeline:.+}")
+    @Path("/{namespace:.+}/{pipeline:.+}")
     @Consumes({"application/yml"})
     Response retrievePipeline(@PathParam("namespace") String namespace, @PathParam("pipeline") String name);
 
     @GET
-    @Path("/define/{namespace:.+}")
+    @Path("/{namespace:.+}")
     @Consumes({"application/yml"})
     Response retrievePipelines(@PathParam("namespace") String namespace);
 
     @DELETE
-    @Path("/define/{namespace:.+}/{pipeline:.+}")
+    @Path("/{namespace:.+}/{pipeline:.+}")
     Response deletePipeline(@PathParam("namespace") String namespace, @PathParam("pipeline") String name);
 
     @POST

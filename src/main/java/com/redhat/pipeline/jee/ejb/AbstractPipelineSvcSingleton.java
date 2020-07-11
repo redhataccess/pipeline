@@ -2,14 +2,12 @@ package com.redhat.pipeline.jee.ejb;
 
 import com.redhat.common.AbstractBase;
 import com.redhat.global.GlobalContext;
-import com.redhat.global.context.DefaultGlobalContext;
 import com.redhat.pipeline.PipelineContext;
 import com.redhat.pipeline.PipelineDefinitions;
 import com.redhat.pipeline.PipelineVarNameEnum;
 import com.redhat.pipeline.context.DefaultPipelineContext;
 import com.redhat.pipeline.definitions.DefaultPipelineDefinitions;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.PostConstruct;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -24,36 +22,38 @@ import javax.ejb.Startup;
 @Startup
 @Singleton
 @Lock(LockType.READ)
-public class PipelineSvcSingleton extends AbstractBase {
-
-    private GlobalContext globalContext;
-    private Map<String, PipelineDefinitions> nameSpace;
-
-    GlobalContext getGlobalContext() {
-        return globalContext;
-    }
-
-    Map<String, PipelineDefinitions> getNameSpace() {
-        return nameSpace;
-    }
-
-    PipelineDefinitions getPipelineDefinitions(final String nameSpace) {
-        return getNameSpace().computeIfAbsent(nameSpace, context -> new DefaultPipelineDefinitions());
-    }
+public abstract class AbstractPipelineSvcSingleton extends AbstractBase {
 
     /**
      * Upon initialization we will define all our steps denoted by name and
      * class.
      */
     @PostConstruct
-    void init() {
-        nameSpace = new ConcurrentHashMap<>();
-        globalContext = new DefaultGlobalContext();
-
+    protected void init() {
         logInfo("Constructed and ready");
     }
 
-    PipelineContext createContext(final Map<String, String[]> queryParams, final Object payload) {
+    /**
+     * Subclasses are responsible for computing/returning the global context.
+     */
+    protected abstract GlobalContext getGlobalContext();
+
+    /**
+     * Subclasses are responsible for computing/returning the namespace.
+     */
+    protected abstract Map<String, PipelineDefinitions> getNameSpace();
+
+    /**
+     * Default impl to return a pipeline definition.
+     */
+    protected PipelineDefinitions getPipelineDefinitions(final String nameSpace) {
+        return getNameSpace().computeIfAbsent(nameSpace, context -> new DefaultPipelineDefinitions());
+    }
+
+    /**
+     * Default imp to create a pipeline context with query params and payload set.
+     */
+    protected PipelineContext createContext(final Map<String, String[]> queryParams, final Object payload) {
         final DefaultPipelineContext retVal = new DefaultPipelineContext(getGlobalContext());
 
         PipelineVarNameEnum.QUERY_PARAMS.setVar(retVal, queryParams);
@@ -62,7 +62,10 @@ public class PipelineSvcSingleton extends AbstractBase {
         return retVal;
     }
 
-    PipelineContext createContext(final Map<String, String[]> queryParams) {
+    /**
+     * Default impl to create a pipeline context with just the query params set.
+     */
+    protected PipelineContext createContext(final Map<String, String[]> queryParams) {
         final DefaultPipelineContext retVal = new DefaultPipelineContext(getGlobalContext());
 
         PipelineVarNameEnum.QUERY_PARAMS.setVar(retVal, queryParams);
@@ -73,7 +76,7 @@ public class PipelineSvcSingleton extends AbstractBase {
     /**
      * Default constructor.
      */
-    public PipelineSvcSingleton() {
+    protected AbstractPipelineSvcSingleton() {
     }
 
     /**
