@@ -5,10 +5,9 @@ import static com.redhat.common.jee.rest.utils.ResponseBuilder.CREATED;
 import static com.redhat.common.jee.rest.utils.ResponseBuilder.INTERNAL_SERVER_ERROR;
 import static com.redhat.common.jee.rest.utils.ResponseBuilder.NOT_FOUND;
 import static com.redhat.common.jee.rest.utils.ResponseBuilder.OK;
-import com.redhat.pipeline.jee.ejb.PipelineSvcSingleton;
+import com.redhat.pipeline.jee.ejb.AbstractPipelineSvcSingleton;
 import com.redhat.pipeline.jee.rest.AbstractPipelineResource;
 import java.util.function.Supplier;
-import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 
@@ -16,17 +15,9 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author sfloess
  */
-public class AbstractPipelineResourceProxy extends AbstractResourceProxy<PipelineSvcSingleton> implements AbstractPipelineResource {
+public abstract class AbstractPipelineResourceProxy<S extends AbstractPipelineSvcSingleton> extends AbstractResourceProxy<S> implements AbstractPipelineResource {
     public static final String PIPELINE_MESSAGE_HEADER_NAME = "Pipeline-Message";
     public static final String PIPELINE_CODE_HEADER_NAME = "Pipeline-Code";
-
-    /**
-     * {@inheritDoc}
-     */
-    @Inject
-    void injectService(final PipelineSvcSingleton service) {
-        setService(service);
-    }
 
     /**
      * Allow code to supply calling service code. If an exception is raised, this method will deal with it.
