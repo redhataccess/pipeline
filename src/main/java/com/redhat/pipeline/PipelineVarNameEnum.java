@@ -20,6 +20,14 @@ public enum PipelineVarNameEnum {
         return varName;
     }
 
+    public <T> T getVar(final VarContext context, final T defaultValue) {
+        return context.get(getVarName(), defaultValue);
+    }
+
+    public <T> T getVar(final VarContext context) {
+        return context.get(getVarName());
+    }
+
     public void setVar(final VarContext context, final Object value) {
         context.set(getVarName(), value);
     }
