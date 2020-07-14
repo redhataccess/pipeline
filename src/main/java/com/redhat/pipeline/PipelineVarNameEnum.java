@@ -28,11 +28,15 @@ public enum PipelineVarNameEnum {
         return context.get(getVarName());
     }
 
-    public void setVar(final VarContext context, final Object value) {
+    public VarContext setVar(final VarContext context, final Object value) {
         context.set(getVarName(), value);
+
+        return context;
     }
 
-    public void setVar(final PipelineContext context, final Object value) {
+    public PipelineContext setVar(final PipelineContext context, final Object value) {
         setVar(context.getPipelineVars(), value);
+
+        return context;
     }
 }
