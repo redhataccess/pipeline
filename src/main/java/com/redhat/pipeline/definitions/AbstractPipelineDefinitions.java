@@ -26,7 +26,7 @@ public abstract class AbstractPipelineDefinitions extends AbstractJsonDefinition
      */
     @Override
     public void defineJsonPipeline(final String name, final String jsonStr) {
-        getDefMap().put(name, JSON.strToJsonObject(jsonStr));
+        getDefMap().put(name, JSON.asJsonObject(jsonStr));
     }
 
     /**
@@ -34,7 +34,7 @@ public abstract class AbstractPipelineDefinitions extends AbstractJsonDefinition
      */
     @Override
     public void defineXmlPipeline(final String name, final String xmlStr) {
-        getDefMap().put(name, XML.strToJsonObject(xmlStr));
+        getDefMap().put(name, XML.asJsonObject(xmlStr));
     }
 
     /**
@@ -42,7 +42,7 @@ public abstract class AbstractPipelineDefinitions extends AbstractJsonDefinition
      */
     @Override
     public void defineYamlPipeline(final String name, final String yamlStr) {
-        getDefMap().put(name, YAML.strToJsonObject(yamlStr));
+        getDefMap().put(name, YAML.asJsonObject(yamlStr));
     }
 
     /**
