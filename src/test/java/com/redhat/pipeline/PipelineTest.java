@@ -46,7 +46,7 @@ public class PipelineTest {
     @Test
     public void test_loadYaml() throws Exception {
         final String yamlStr = IOUtils.toString(getClass().getResourceAsStream("/LoopPipeline.yml"), "UTF-8");
-        final Map map = YAML.strToObject(yamlStr, HashMap.class);
+        final Map map = YAML.asType(yamlStr, HashMap.class);
         final JSONObject json = new JSONObject(map);
         System.out.println(json.toString(4));
     }
