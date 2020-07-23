@@ -8,6 +8,7 @@ import com.redhat.pipeline.PipelineVarNameEnum;
 import com.redhat.pipeline.context.DefaultPipelineContext;
 import com.redhat.pipeline.definitions.DefaultPipelineDefinitions;
 import java.util.Map;
+import java.util.function.Function;
 import javax.annotation.PostConstruct;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -44,10 +45,17 @@ public abstract class AbstractPipelineSvcSingleton extends AbstractBase {
     protected abstract Map<String, PipelineDefinitions> getNameSpace();
 
     /**
+     * Allow subclasses to override and return their own impls.
+     */
+    protected Function<String, ? extends PipelineDefinitions> createPipelineDefinition() {
+        return context -> new DefaultPipelineDefinitions();
+    }
+
+    /**
      * Default impl to return a pipeline definition.
      */
     protected PipelineDefinitions getPipelineDefinitions(final String nameSpace) {
-        return getNameSpace().computeIfAbsent(nameSpace, context -> new DefaultPipelineDefinitions());
+        return getNameSpace().computeIfAbsent(nameSpace, createPipelineDefinition());
     }
 
     /**
