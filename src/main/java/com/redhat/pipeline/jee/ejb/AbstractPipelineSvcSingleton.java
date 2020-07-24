@@ -119,14 +119,14 @@ public abstract class AbstractPipelineSvcSingleton extends AbstractBase {
     /**
      * This will run a pipeline named name.
      */
-    public Object runPipeline(final String nameSpace, final String pipelineName, final Map<String, String[]> queryParams, final Object payload) {
-        return getPipelineDefinitions(nameSpace).create(pipelineName).process(createContext(queryParams, payload));
+    public <T> T runPipeline(final String nameSpace, final String pipelineName, final Map<String, String[]> queryParams, final Object payload) {
+        return getPipelineDefinitions(nameSpace).create(pipelineName).process(createContext(queryParams, payload)).getResult();
     }
 
     /**
      * This will run a pipeline named name.
      */
-    public Object runPipeline(final String nameSpace, final String pipelineName, final Map<String, String[]> queryParams) {
-        return getPipelineDefinitions(nameSpace).create(pipelineName).process(createContext(queryParams));
+    public <T> T runPipeline(final String nameSpace, final String pipelineName, final Map<String, String[]> queryParams) {
+        return getPipelineDefinitions(nameSpace).create(pipelineName).process(createContext(queryParams)).getResult();
     }
 }
