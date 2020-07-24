@@ -38,7 +38,7 @@ public class AbstractStepExecutor extends AbstractExecutor<StepContext, Step> im
     }
 
     /**
-     * We will store a result if the result eleemnt is present.
+     * We will store a result if the result eleement is present.
      */
     StepContext storeResult(final StepContext toProcess, final JSONObject metaStep) {
         Objects.requireNonNull(toProcess, "Must provide an object to process!");
