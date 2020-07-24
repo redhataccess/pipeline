@@ -36,7 +36,7 @@ public class ReturnStep extends AbstractStep {
 
     @Override
     public StepContext process(final StepContext context) {
-        context.getPipelineContext().setResult(context.getStepVars().get(var));
+        context.getPipelineContext().setResult(context.getPipelineContext().getPipelineVars().get(var));
         context.getPipelineContext().setIsDone(true);
 
         return context;
