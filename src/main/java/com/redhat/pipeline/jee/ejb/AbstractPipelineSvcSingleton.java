@@ -8,6 +8,7 @@ import com.redhat.pipeline.PipelineDefinitions;
 import com.redhat.pipeline.PipelineExecutor;
 import com.redhat.pipeline.PipelineVarNameEnum;
 import com.redhat.pipeline.context.DefaultPipelineContext;
+import com.redhat.step.StepContext;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.Lock;
@@ -60,6 +61,11 @@ public abstract class AbstractPipelineSvcSingleton extends AbstractBase {
     protected abstract PipelineDefinitions createPipelineDefinitions();
 
     /**
+     * Subclasses are responsible for computing/returning step contexts.
+     */
+    protected abstract StepContext createStepContext();
+
+    /**
      * Default impl to return a pipeline definition.
      */
     protected PipelineDefinitions getPipelineDefinitions(final String nameSpace) {
@@ -72,7 +78,7 @@ public abstract class AbstractPipelineSvcSingleton extends AbstractBase {
      * Default impl to create a context.
      */
     protected PipelineContext createContext(final String nameSpace) {
-        return new DefaultPipelineContext(getPipelineExecutor(), getPipelineDefinitions(nameSpace), createPipelineVars(), getGlobalContext());
+        return new DefaultPipelineContext(getPipelineExecutor(), getPipelineDefinitions(nameSpace), createPipelineVars(), getGlobalContext(), createStepContext());
     }
 
     /**

@@ -33,4 +33,9 @@ public interface StepContext {
      * Return the pipeline context for whom we are defined by.
      */
     PipelineContext getPipelineContext();
+
+    /**
+     * Use this method sparingly.
+     */
+    void setPipelineContext(PipelineContext context);
 }
