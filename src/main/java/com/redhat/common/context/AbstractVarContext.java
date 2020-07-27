@@ -60,9 +60,11 @@ public abstract class AbstractVarContext implements VarContext {
      */
     @Override
     public <T> T set(final String name, final T value) {
-        getContextMap().put(name, value);
+        if (value != null) {
+            return (T) getContextMap().put(name, value);
+        }
 
-        return value;
+        return (T) getContextMap().remove(name);
     }
 
     /**
