@@ -46,6 +46,6 @@ public class DefaultStepContext extends AbstractStepContext {
      */
     @Override
     public void setPipelineContext(PipelineContext context) {
-        this.pipelineContext = Objects.requireNonNull(pipelineContext, "Cannot have null pipeline contexts");
+        this.pipelineContext = Objects.requireNonNull(context, "Cannot have null pipeline contexts");
     }
 }
