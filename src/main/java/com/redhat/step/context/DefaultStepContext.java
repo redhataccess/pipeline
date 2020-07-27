@@ -17,7 +17,7 @@ import java.util.Objects;
  * @author sfloess
  */
 public class DefaultStepContext extends AbstractStepContext {
-    private final PipelineContext pipelineContext;
+    private PipelineContext pipelineContext;
 
     public DefaultStepContext(final StepExecutor stepExecutor, final StepDefinitions stepDefinitions, final StepPreprocessor stepPreprocessor, final VarContext stepVars, final PipelineContext pipelineContext) {
         super(stepExecutor, stepDefinitions, stepPreprocessor, stepVars);
@@ -29,11 +29,23 @@ public class DefaultStepContext extends AbstractStepContext {
         this(new DefaultStepExecutor(), new DefaultStepDefinitions(), new VariableExpansionStepPreprocessor(), new DefaultVarContext(), pipelineContext);
     }
 
+    public DefaultStepContext() {
+        super(new DefaultStepExecutor(), new DefaultStepDefinitions(), new VariableExpansionStepPreprocessor(), new DefaultVarContext());
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public PipelineContext getPipelineContext() {
         return pipelineContext;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPipelineContext(PipelineContext context) {
+        this.pipelineContext = Objects.requireNonNull(pipelineContext, "Cannot have null pipeline contexts");
     }
 }

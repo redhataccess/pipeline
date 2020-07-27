@@ -8,6 +8,8 @@ import com.redhat.pipeline.PipelineDefinitions;
 import com.redhat.pipeline.PipelineExecutor;
 import com.redhat.pipeline.definitions.DefaultPipelineDefinitions;
 import com.redhat.pipeline.executor.DefaultPipelineExecutor;
+import com.redhat.step.StepContext;
+import com.redhat.step.context.DefaultStepContext;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.PostConstruct;
@@ -63,5 +65,10 @@ public class DefaultPipelineSvcSingleton extends AbstractPipelineSvcSingleton {
     @Override
     protected PipelineDefinitions createPipelineDefinitions() {
         return new DefaultPipelineDefinitions();
+    }
+
+    @Override
+    protected StepContext createStepContext() {
+        return new DefaultStepContext();
     }
 }
