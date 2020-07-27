@@ -30,6 +30,12 @@ public class DefaultPipelineContext extends AbstractPipelineContext {
         this.stepContext = Objects.requireNonNull(stepContext, "Cannot have a null step context");
     }
 
+    public DefaultPipelineContext(final PipelineExecutor pipelineExecutor, final PipelineDefinitions pipelineDefintions, final VarContext pipelineVars, final GlobalContext globalContext) {
+        super(pipelineExecutor, pipelineDefintions, pipelineVars, globalContext);
+
+        this.stepContext = new DefaultStepContext(this);
+    }
+
     public DefaultPipelineContext(final GlobalContext globalContext) {
         super(new DefaultPipelineExecutor(), new DefaultPipelineDefinitions(), new DefaultVarContext(), globalContext);
 

@@ -48,15 +48,32 @@ public class AbstractStepExecutor extends AbstractExecutor<StepContext, Step> im
     }
 
     /**
-     * Execute a step name <code>stepName</code>. We may desire preprocessing depending on <code>isPreProcessable</code>.
+     * Ensures we have an initial state for processing.
      */
-    StepContext executeStep(final StepContext toProcess, final String stepName, boolean isPreProcessable, final JSONObject initState) {
+    JSONObject computeInitState(final JSONObject initState) {
+        return null == initState ? new JSONObject() : initState;
+    }
+
+    /**
+     * Execute a step named <code>stepName</code>. We may desire preprocessing depending on <code>isPreProcessable</code>. It assumes
+     * <code>initState</code>
+     * is actually set.
+     */
+    StepContext executeStepWithActualInitState(final StepContext toProcess, final String stepName, boolean isPreProcessable, final JSONObject initState) {
         logIfDebug("Executing step [", stepName, "]\n    -> ", initState.toString(4));
 
         return storeResult(
                 toProcess.getStepDefinitions().create(
                         stepName, isPreProcessable ? toProcess.getStepPreprocessor().prepare(initState, toProcess) : initState
                 ).process(toProcess), initState);
+    }
+
+    /**
+     * Executes a step named <code>stepName</code>. We may desire preprocessing depending on <code>isPreProcessable</code>. This method ensures
+     * there is an initial state.
+     */
+    StepContext executeStep(final StepContext toProcess, final String stepName, boolean isPreProcessable, final JSONObject initState) {
+        return executeStepWithActualInitState(toProcess, stepName, isPreProcessable, computeInitState(initState));
     }
 
     /**
