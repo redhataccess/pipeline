@@ -1,2 +1,2 @@
-# piplelines
+# pipelines
 Java based pipeline library
