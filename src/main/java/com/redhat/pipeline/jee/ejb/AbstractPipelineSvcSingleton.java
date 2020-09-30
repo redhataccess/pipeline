@@ -2,13 +2,16 @@ package com.redhat.pipeline.jee.ejb;
 
 import com.redhat.common.AbstractBase;
 import com.redhat.common.context.VarContext;
+import com.redhat.common.utils.Strings;
 import com.redhat.global.GlobalContext;
+import com.redhat.pipeline.Pipeline;
 import com.redhat.pipeline.PipelineContext;
 import com.redhat.pipeline.PipelineDefinitions;
 import com.redhat.pipeline.PipelineExecutor;
 import com.redhat.pipeline.PipelineVarNameEnum;
 import com.redhat.pipeline.context.DefaultPipelineContext;
 import com.redhat.step.StepContext;
+import java.util.Collections;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.Lock;
@@ -27,6 +30,13 @@ import javax.ejb.Startup;
 public abstract class AbstractPipelineSvcSingleton extends AbstractBase {
 
     /**
+     * Determine if <code>pipelineName</code> exists in <code>pipelineDefinitions</code>.
+     */
+    boolean isPipelinePresent(final PipelineDefinitions pipelineDefinitions, final String pipelineName) {
+        return null != pipelineDefinitions && null != pipelineDefinitions.getDefinition(pipelineName);
+    }
+
+    /**
      * Upon initialization we will define all our steps denoted by name and
      * class.
      */
@@ -34,11 +44,6 @@ public abstract class AbstractPipelineSvcSingleton extends AbstractBase {
     protected void init() {
         logInfo("Constructed and ready");
     }
-
-    /**
-     * Subclasses are responsible for computing/returning the namespace.
-     */
-    protected abstract Map<String, PipelineDefinitions> getNameSpace();
 
     /**
      * Subclasses are responsible for computing/returning the global context.
@@ -64,6 +69,31 @@ public abstract class AbstractPipelineSvcSingleton extends AbstractBase {
      * Subclasses are responsible for computing/returning step contexts.
      */
     protected abstract StepContext createStepContext();
+
+    /**
+     * Subclasses are responsible for computing/returning the namespace.
+     */
+    protected abstract Map<String, PipelineDefinitions> getNameSpace();
+
+    /**
+     * Called when a pipeline is to be run, but isn't found.
+     */
+    protected abstract void pipelineNotFound(String pipelineNameSpace, String pipelineName);
+
+    /**
+     * Ensures a pipeline is fond for namespace and name.
+     */
+    protected Pipeline ensurePipeline(final String pipelineNameSpace, final String pipelineName) {
+        if (isPipelinePresent(pipelineNameSpace, pipelineName)) {
+            logError("Cannot find pipeline [", pipelineNameSpace, " : ", pipelineName, "]");
+
+            pipelineNotFound(pipelineNameSpace, pipelineName);
+        }
+
+        logIfInfo("Creating pipeline [", pipelineNameSpace, " : ", pipelineName, "]");
+
+        return getPipelineDefinitions(pipelineNameSpace).create(pipelineName);
+    }
 
     /**
      * Default impl to return a pipeline definition.
@@ -102,6 +132,27 @@ public abstract class AbstractPipelineSvcSingleton extends AbstractBase {
     }
 
     /**
+     * Subclasses create the namespace collection, but this opens it to those who want the raw object. Please note: it is unmodifiable.
+     */
+    public Map<String, PipelineDefinitions> getNameSpaceCopy() {
+        return Collections.unmodifiableMap(getNameSpace());
+    }
+
+    /**
+     * Return the total number of namespaces or zero if no namespaces exist (or is null).
+     */
+    public int getTotalNameSpaces() {
+        return null != getNameSpaceCopy() ? getNameSpaceCopy().size() : 0;
+    }
+
+    /**
+     * Determine if <code>pipeline</code> exists in the <code>pipelineNameSpace</code>.
+     */
+    public boolean isPipelinePresent(final String pipelineNameSpace, final String pipelineName) {
+        return !Strings.isBlank(pipelineNameSpace) && isPipelinePresent(getNameSpaceCopy().get(pipelineNameSpace), pipelineName);
+    }
+
+    /**
      * Called when a client wants to define it's own pipeline. The name is the
      * name of the pipeline and the pipeline represents a JSON Object.
      */
@@ -133,14 +184,14 @@ public abstract class AbstractPipelineSvcSingleton extends AbstractBase {
     /**
      * This will run a pipeline named name.
      */
-    public <T> T runPipeline(final String nameSpace, final String pipelineName, final Map<String, String[]> queryParams, final Object payload) {
-        return getPipelineDefinitions(nameSpace).create(pipelineName).process(createContext(nameSpace, queryParams, payload)).getResult();
+    public <T> T runPipeline(final String pipelineNameSpace, final String pipelineName, final Map<String, String[]> queryParams, final Object payload) {
+        return ensurePipeline(pipelineNameSpace, pipelineName).process(createContext(pipelineNameSpace, queryParams, payload)).getResult();
     }
 
     /**
      * This will run a pipeline named name.
      */
-    public <T> T runPipeline(final String nameSpace, final String pipelineName, final Map<String, String[]> queryParams) {
-        return getPipelineDefinitions(nameSpace).create(pipelineName).process(createContext(nameSpace, queryParams)).getResult();
+    public <T> T runPipeline(final String pipelineNameSpace, final String pipelineName, final Map<String, String[]> queryParams) {
+        return ensurePipeline(pipelineNameSpace, pipelineName).process(createContext(pipelineNameSpace, queryParams)).getResult();
     }
 }
