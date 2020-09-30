@@ -52,23 +52,45 @@ public class DefaultPipelineSvcSingleton extends AbstractPipelineSvcSingleton {
         return globalContext;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected PipelineExecutor getPipelineExecutor() {
         return pipelineExecutor;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected VarContext createPipelineVars() {
         return new DefaultVarContext();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected PipelineDefinitions createPipelineDefinitions() {
         return new DefaultPipelineDefinitions();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected StepContext createStepContext() {
         return new DefaultStepContext();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void pipelineNotFound(final String pipelineNameSpace, final String pipelineName) {
+        logError("Pipeline not found [", pipelineNameSpace, " : ", pipelineName, "]");
+
+        throw new IllegalArgumentException("Pipeline not found:  [" + pipelineNameSpace + " : " + pipelineName + "]");
     }
 }
