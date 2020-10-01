@@ -209,16 +209,11 @@
 		</dependency>
     </dependencies>
 
-	<profiles>
-		<profile>
-			<id>release</id>
-			<distributionManagement>
-				<repository>
-					<id>ssh-repository</id>
-					<name>GSS RDU Repo</name>
-					<url>sftp://root@gss-rdu-repo.usersys.redhat.com/var/repo/maven/release</url>
-				</repository>
-			</distributionManagement>
-		</profile>
-    </profiles>
+    <distributionManagement>
+        <repository>
+            <id>nexus</id>
+            <name>nexus</name>
+            <url>https://nexus.corp.redhat.com/repository/information-retrieval-maven2-releases/</url>
+        </repository>
+    </distributionManagement>
 </project>
