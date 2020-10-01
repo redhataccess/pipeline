@@ -42,4 +42,13 @@ public interface PipelineDefinitions extends JsonDefinitions<JSONObject> {
      *
      */
     Pipeline create(String name);
+
+    /**
+     * Do we have a pipeline definition?
+     *
+     * @param name is the name of the pipeline to examine for being defined.
+     *
+     * @return true if the pipeline is defined, or false if not.
+     */
+    boolean isPipelineDefined(String name);
 }

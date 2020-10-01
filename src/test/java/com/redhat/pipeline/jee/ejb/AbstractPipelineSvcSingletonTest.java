@@ -1,13 +1,11 @@
 package com.redhat.pipeline.jee.ejb;
 
 import com.redhat.pipeline.PipelineDefinitions;
-import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 /**
@@ -24,6 +22,7 @@ public class AbstractPipelineSvcSingletonTest {
 
     @Before
     public void setup() {
+
         svc = new DefaultPipelineSvcSingleton();
 
         svc.init();
@@ -37,10 +36,9 @@ public class AbstractPipelineSvcSingletonTest {
         Assert.assertFalse("Pipeline should not be present", svc.isPipelinePresent(pipelineDefinitions, "   "));
         Assert.assertFalse("Pipeline should not be present", svc.isPipelinePresent(pipelineDefinitions, "" + System.currentTimeMillis()));
 
-        Mockito.when(pipelineDefinitions.getDefinition(Mockito.anyString())).thenReturn(new JSONObject());
+        svc.definePipeline("foo", "123", "---\nsteps:\n- callerRole:\n  callerRole: 10\n");
 
-        Assert.assertTrue("Should have a pipeline present", svc.isPipelinePresent(pipelineDefinitions, "123"));
-        Mockito.verify(pipelineDefinitions, Mockito.times(1)).getDefinition("123");
+        Assert.assertTrue("Should have a pipeline present", svc.isPipelinePresent(svc.getNameSpace().get("foo"), "123"));
     }
 
     @Test
