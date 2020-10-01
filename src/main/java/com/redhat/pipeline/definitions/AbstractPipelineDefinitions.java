@@ -4,6 +4,7 @@ import com.redhat.common.AbstractJsonDefinitions;
 import static com.redhat.common.markup.MarkupBuilder.JSON;
 import static com.redhat.common.markup.MarkupBuilder.XML;
 import static com.redhat.common.markup.MarkupBuilder.YAML;
+import com.redhat.common.utils.Strings;
 import com.redhat.pipeline.DefaultPipeline;
 import com.redhat.pipeline.Pipeline;
 import com.redhat.pipeline.PipelineDefinitions;
@@ -51,5 +52,15 @@ public abstract class AbstractPipelineDefinitions extends AbstractJsonDefinition
     @Override
     public Pipeline create(String name) {
         return new DefaultPipeline(getDefMap().get(ensureDefinitionName(name)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isPipelineDefined(final String name) {
+        logInfo("name [", name, "] -> [", getDefMap().containsKey(name), "]");
+
+        return !Strings.isBlank(name) && getDefMap().containsKey(name);
     }
 }

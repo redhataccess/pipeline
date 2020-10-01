@@ -33,7 +33,7 @@ public abstract class AbstractPipelineSvcSingleton extends AbstractBase {
      * Determine if <code>pipelineName</code> exists in <code>pipelineDefinitions</code>.
      */
     boolean isPipelinePresent(final PipelineDefinitions pipelineDefinitions, final String pipelineName) {
-        return null != pipelineDefinitions && null != pipelineDefinitions.getDefinition(pipelineName);
+        return null != pipelineDefinitions && pipelineDefinitions.isPipelineDefined(pipelineName);
     }
 
     /**
@@ -84,7 +84,7 @@ public abstract class AbstractPipelineSvcSingleton extends AbstractBase {
      * Ensures a pipeline is fond for namespace and name.
      */
     protected Pipeline ensurePipeline(final String pipelineNameSpace, final String pipelineName) {
-        if (isPipelinePresent(pipelineNameSpace, pipelineName)) {
+        if (!isPipelinePresent(pipelineNameSpace, pipelineName)) {
             logError("Cannot find pipeline [", pipelineNameSpace, " : ", pipelineName, "]");
 
             pipelineNotFound(pipelineNameSpace, pipelineName);
