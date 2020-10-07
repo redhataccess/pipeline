@@ -47,5 +47,5 @@ jobs:
                   username:    sfloess
                   password:    "${{ secrets.BINTRAY }}"
                   repository:  "https://api.bintray.com/maven/redhataccess/maven/pipeline/;publish=1"
-                   maven-goals: deploy
+                  maven-goals: deploy
     
