@@ -22,25 +22,25 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
-            - name: Set up JDK ${{ matrix.java }}
+            - name: Setup JDK ${{ matrix.java }}
               uses: actions/setup-java@v1
               with:
                   java-version: ${{ matrix.java }}
                   server-id: github
                    
-            - name: maven-settings-xml-action
+            - name: Setup ~/.m2/settings.xml
               uses: whelk-io/maven-settings-xml-action@v12
               with:
                   repositories: '[{"id": "bintray_redhataccess", "url": "https://dl.bintray.com/redhataccess/maven"}]'
                   servers: '[{"id": "bintray", "username": "sfloess", "password": "${{ secrets.BINTRAY }}"}]' 
  
-            - name: Version rev with Maven
+            - name: Version bump for pom.xml
               run: mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion} versions:commit --file pom.xml
               
-            - name: Get latest libraries
+            - name: Update versions for latest libraries
               run: mvn versions:update-properties -DincludeProperties=com.redhat_commons
 
-            - name: Build with Maven
+            - name: Build and deploy to Bintray
               run: mvn -B clean install deploy
   
             - name: Commit files
