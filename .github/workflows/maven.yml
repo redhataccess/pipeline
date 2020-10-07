@@ -30,6 +30,9 @@ jobs:
  
             - name: Version rev with Maven
               run: mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion} versions:commit --file pom.xml
+              
+            - name: Get latest libraries
+              run: mvn versions:update-properties -DincludeProperties=com.redhat_commons
                   
             - name: maven-settings-xml-action
               uses: whelk-io/maven-settings-xml-action@v12
