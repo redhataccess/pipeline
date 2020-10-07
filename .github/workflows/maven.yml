@@ -50,4 +50,5 @@ jobs:
                   git commit -m "Version upgrade" -a
                   echo ::set-env name=TAG_NAME::$(mvn help:evaluate -Dexpression=project.version -DforceStdout)
                   git push origin master ${TAG_NAME}
+                  git push origin ${TAG_NAME}
     
