@@ -38,7 +38,9 @@ jobs:
               run: mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion} versions:commit --file pom.xml
               
             - name: Update versions for latest libraries
-              run: mvn versions:update-properties -DincludeProperties=com.redhat_commons
+              run: |
+                  mvn versions:update-properties -DincludeProperties=com.redhat_commons
+                  echo "GIT_TAG=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
 
             - name: Build and deploy to Bintray
               run: mvn -B clean install deploy
@@ -48,8 +50,7 @@ jobs:
                   git config --local user.email "revision-updater@redhat.com"
                   git config --local user.name "Version Upgrader"
                   git commit -m "Version upgrade" -a
-                  echo "TAG_NAME=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
-                  echo "TAG = $TAG_NAME"
-                  git tag "$TAG_NAME"
-                  git push origin "$TAG_NAME"
+                  echo "TAG = $GIT_TAG"
+                  git tag "$GIT_TAG"
                   git push origin master
+                  git push origin "$GIT_TAG"
