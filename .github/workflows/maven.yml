@@ -1,7 +1,7 @@
 # This workflow will build a Java project with Maven
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: Java CI with Maven
+name: Java CD-CI with Maven
 
 on:
     push:
@@ -53,4 +53,3 @@ jobs:
                   git tag "$TAG_NAME"
                   git push origin "$TAG_NAME"
                   git push origin master
-    
