@@ -48,7 +48,7 @@ jobs:
                   git config --local user.email "revision-updater@redhat.com"
                   git config --local user.name "Version Upgrader"
                   git commit -m "Version upgrade" -a
-                  echo ::set-env name=TAG_NAME::$(mvn help:evaluate -Dexpression=project.version -DforceStdout)
+                  echo "TAG_NAME=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
                   git tag ${TAG_NAME}
                   git push origin master
                   git push origin ${TAG_NAME}
