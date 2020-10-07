@@ -49,7 +49,8 @@ jobs:
                   git config --local user.name "Version Upgrader"
                   git commit -m "Version upgrade" -a
                   echo "TAG_NAME=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
-                  git tag ${TAG_NAME}
+                  echo "TAG = ${TAG_NAME}"
+                  git tag "${TAG_NAME}"
+                  git push origin "${TAG_NAME}"
                   git push origin master
-                  git push origin ${TAG_NAME}
     
