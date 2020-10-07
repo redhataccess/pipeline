@@ -27,17 +27,17 @@ jobs:
               with:
                   java-version: ${{ matrix.java }}
                   server-id: github
+                   
+            - name: maven-settings-xml-action
+              uses: whelk-io/maven-settings-xml-action@v12
+              with:
+                  repositories: '[{"id": "bintray_redhataccess", "url": "https://dl.bintray.com/redhataccess/maven"}]'
  
             - name: Version rev with Maven
               run: mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion} versions:commit --file pom.xml
               
             - name: Get latest libraries
               run: mvn versions:update-properties -DincludeProperties=com.redhat_commons
-                  
-            - name: maven-settings-xml-action
-              uses: whelk-io/maven-settings-xml-action@v12
-              with:
-                  repositories: '[{"id": "bintray_redhataccess", "url": "https://dl.bintray.com/redhataccess/maven"}]'
 
             - name: Build with Maven
               run: mvn -B package --file pom.xml
