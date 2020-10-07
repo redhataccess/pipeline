@@ -211,9 +211,9 @@
 
     <distributionManagement>
         <repository>
-            <id>nexus</id>
-            <name>nexus</name>
-            <url>https://nexus.corp.redhat.com/repository/information-retrieval-maven2-releases/</url>
+            <id>bintray</id>
+            <name>redhataccess</name>
+            <url>https://api.bintray.com/maven/redhataccess/maven/pipeline/;publish=1</url>
         </repository>
     </distributionManagement>
 </project>
