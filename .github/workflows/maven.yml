@@ -39,7 +39,7 @@ jobs:
               
             - name: Update versions for latest libraries
               run: |
-                  mvn versions:update-properties -DincludeProperties=com.redhat_commons
+                  mvn versions:update-properties -DincludeProperties=com.redhat_commons,com.redhat_command
                   echo "GIT_TAG=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
 
             - name: Build and deploy to Bintray
