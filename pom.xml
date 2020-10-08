@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.redhat.gss</groupId>
+    <groupId>com.redhat</groupId>
     <artifactId>pipeline</artifactId>
     <version>1.29</version>
 
@@ -35,6 +35,7 @@
         <commons-io_commons-io>2.7</commons-io_commons-io>
 
         <com.redhat_commons>1.48</com.redhat_commons>
+        <com.redhat_command>1.0</com.redhat_command>
 
         <!-- Scripting language support -->
         <org.apache-extras.beanshell_bsh>2.0b6</org.apache-extras.beanshell_bsh>
@@ -138,6 +139,12 @@
             <groupId>com.redhat</groupId>
             <artifactId>commons</artifactId>
             <version>${com.redhat_commons}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.redhat</groupId>
+            <artifactId>command</artifactId>
+            <version>${com.redhat_command}</version>
         </dependency>
 
         <!-- Script Language Support -->
