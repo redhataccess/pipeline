@@ -4,7 +4,7 @@
 
     <groupId>com.redhat</groupId>
     <artifactId>pipeline</artifactId>
-    <version>1.30</version>
+    <version>1.31</version>
 
     <name>Red Hat Pipeline Library</name>
     <description>Red Hat Pipeline Library</description>
@@ -34,8 +34,8 @@
         <org.apache.commons_commons-lang3>3.11</org.apache.commons_commons-lang3>
         <commons-io_commons-io>2.7</commons-io_commons-io>
 
-        <com.redhat_commons>1.49</com.redhat_commons>
-        <com.redhat_command>1.1</com.redhat_command>
+        <com.redhat_commons>1.50</com.redhat_commons>
+        <com.redhat_command>1.2</com.redhat_command>
 
         <!-- Scripting language support -->
         <org.apache-extras.beanshell_bsh>2.0b6</org.apache-extras.beanshell_bsh>
