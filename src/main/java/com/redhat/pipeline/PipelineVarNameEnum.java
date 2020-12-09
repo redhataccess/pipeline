@@ -1,6 +1,7 @@
 package com.redhat.pipeline;
 
 import com.redhat.common.context.VarContext;
+import com.redhat.step.StepContext;
 
 /**
  *
@@ -24,8 +25,24 @@ public enum PipelineVarNameEnum {
         return context.get(getVarName(), defaultValue);
     }
 
+    public <T> T getPipelineVar(final PipelineContext context, final T defaultValue) {
+        return getVar(context.getPipelineVars(), defaultValue);
+    }
+
+    public <T> T getPipelineVar(final StepContext context, final T defaultValue) {
+        return PipelineVarNameEnum.this.getPipelineVar(context.getPipelineContext(), defaultValue);
+    }
+
     public <T> T getVar(final VarContext context) {
         return context.get(getVarName());
+    }
+
+    public <T> T getPipelineVar(final PipelineContext context) {
+        return getVar(context.getPipelineVars());
+    }
+
+    public <T> T getPipelineVar(final StepContext context) {
+        return PipelineVarNameEnum.this.getPipelineVar(context.getPipelineContext());
     }
 
     public VarContext setVar(final VarContext context, final Object value) {
@@ -34,9 +51,16 @@ public enum PipelineVarNameEnum {
         return context;
     }
 
-    public PipelineContext setVar(final PipelineContext context, final Object value) {
+    public PipelineContext setPipelineVar(final PipelineContext context, final Object value) {
         setVar(context.getPipelineVars(), value);
 
         return context;
     }
+
+    public StepContext setPipelineVar(final StepContext context, final Object value) {
+        setPipelineVar(context.getPipelineContext(), value);
+
+        return context;
+    }
+
 }

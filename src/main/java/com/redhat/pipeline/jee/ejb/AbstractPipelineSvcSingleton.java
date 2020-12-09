@@ -115,14 +115,14 @@ public abstract class AbstractPipelineSvcSingleton extends AbstractBase {
      * Default impl to create a pipeline context with just the query params set.
      */
     protected PipelineContext createContext(final String nameSpace, final Map<String, String[]> queryParams) {
-        return PipelineVarNameEnum.QUERY_PARAMS.setVar(createContext(nameSpace), queryParams);
+        return PipelineVarNameEnum.QUERY_PARAMS.setPipelineVar(createContext(nameSpace), queryParams);
     }
 
     /**
      * Default imp to create a pipeline context with query params and payload set.
      */
     protected PipelineContext createContext(final String nameSpace, final Map<String, String[]> queryParams, final Object payload) {
-        return PipelineVarNameEnum.PAYLOAD.setVar(createContext(nameSpace, queryParams), payload);
+        return PipelineVarNameEnum.PAYLOAD.setPipelineVar(createContext(nameSpace, queryParams), payload);
     }
 
     /**
